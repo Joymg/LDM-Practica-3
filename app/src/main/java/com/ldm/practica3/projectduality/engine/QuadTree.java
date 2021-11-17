@@ -32,7 +32,7 @@ public class QuadTree {
     }
 
     public void checkObjects(List<ScreenGameObject> gameObjects) {
-        gameObjects.clear();
+        //gameObjects.clear();
         int numObjects = gameObjects.size();
         for (int i = 0; i < numObjects; i++) {
             ScreenGameObject current = gameObjects.get(i);

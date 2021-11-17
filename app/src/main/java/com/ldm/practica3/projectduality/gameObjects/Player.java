@@ -97,7 +97,7 @@ public class Player extends Sprite {
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
         if (otherObject instanceof Asteroid) {
-            gameEngine.removeGameObject(this);
+            //gameEngine.removeGameObject(this);
             //gameEngine.stopGame();
             Asteroid a = (Asteroid) otherObject;
             a.removeObject(gameEngine);

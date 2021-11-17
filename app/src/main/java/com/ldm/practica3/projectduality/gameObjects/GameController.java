@@ -2,6 +2,7 @@ package com.ldm.practica3.projectduality.gameObjects;
 
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.ldm.practica3.projectduality.engine.GameObject;
 import com.ldm.practica3.projectduality.engine.GameEngine;
@@ -11,14 +12,14 @@ import java.util.List;
 
 public class GameController extends GameObject {
 
-    private static final int TIME_BETWEEN_ENEMIES = 500;
+    private static final int TIME_BETWEEN_ENEMIES = 1000;
     private long currentMillis;
     private List<Asteroid> asteroidPool = new ArrayList<Asteroid>();
     private int enemiesSpawned;
 
     public GameController(GameEngine gameEngine) {
         // We initialize the pool of items now
-        for (int i=0; i<10; i++) {
+        for (int i=0; i<20; i++) {
             asteroidPool.add(new Asteroid(this, gameEngine));
         }
     }
@@ -33,8 +34,10 @@ public class GameController extends GameObject {
     public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
         currentMillis += elapsedMillis;
 
-        long waveTimestamp = enemiesSpawned*TIME_BETWEEN_ENEMIES;
+        long waveTimestamp = enemiesSpawned * TIME_BETWEEN_ENEMIES;
         if (currentMillis > waveTimestamp) {
+
+            //Log.d("GC", "onUpdate: " + asteroidPool.size());
             // Spawn a new enemy
             Asteroid a = asteroidPool.remove(0);
             a.init(gameEngine);
