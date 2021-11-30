@@ -1,8 +1,10 @@
 package com.ldm.practica3.projectduality.engine;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class StandardGameView extends View implements GameView {
         this.gameObjects = new ArrayList<GameObject>();
     }
 
+
     @Override
     public void draw() {
         postInvalidate();
@@ -42,6 +45,7 @@ public class StandardGameView extends View implements GameView {
             }
         }
     }
+
 
     public void setGameObjects(List<GameObject> gameObjects) {
         this.gameObjects = gameObjects;

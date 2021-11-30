@@ -15,6 +15,9 @@ public class GameController extends GameObject {
     private static final int TIME_BETWEEN_ENEMIES = 1000;
     private long currentMillis;
     private List<Asteroid> asteroidPool = new ArrayList<Asteroid>();
+    /*private List<Enemy> enemyPool = new ArrayList<Enemy>();
+    private List<Enemy> enemyPool = new ArrayList<Enemy>();
+    private List<Enemy> enemyPool = new ArrayList<Enemy>();*/
     private int enemiesSpawned;
 
     public GameController(GameEngine gameEngine) {
@@ -52,7 +55,12 @@ public class GameController extends GameObject {
         // This game object does not draw anything
     }
 
-    public void returnToPool(Asteroid asteroid) {
-        asteroidPool.add(asteroid);
+    public void returnToPool(Enemy enemy) {
+
+        switch (enemy.enemyType){
+            case 0:
+                asteroidPool.add((Asteroid) enemy);
+                break;
+        }
     }
 }

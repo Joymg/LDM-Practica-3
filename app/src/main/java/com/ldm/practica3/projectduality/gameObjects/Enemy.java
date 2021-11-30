@@ -4,22 +4,21 @@ import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
 
-public class Asteroid extends Enemy {
+public class Enemy extends Sprite{
 
-    private final GameController gameController;
+    protected final GameController gameController;
 
-    private final int asteroidType = 0;
+    protected double speed;
+    protected double speedX;
+    protected double speedY;
+    protected double rotationSpeed;
 
-    private double speed;
-    private double speedX;
-    private double speedY;
-    private double rotationSpeed;
+    protected int enemyType;
 
-    public Asteroid(GameController gameController, GameEngine gameEngine) {
-        super(gameController,gameEngine,R.drawable.a10000);
+    protected Enemy(GameController gameController, GameEngine gameEngine, int drawable) {
+        super(gameEngine, drawable);
         this.speed = 50d * pixelFactor/1000d;
         this.gameController = gameController;
-        enemyType = asteroidType;
     }
 
     public void init(GameEngine gameEngine) {
@@ -35,15 +34,15 @@ public class Asteroid extends Enemy {
         rotation = gameEngine.random.nextInt(360);
     }
 
-    @Override
-    public void startGame() {
-    }
-
-
     public void removeObject(GameEngine gameEngine) {
         // Return to the pool
         gameEngine.removeGameObject(this);
         gameController.returnToPool(this);
+    }
+
+    @Override
+    public void startGame() {
+
     }
 
     @Override
@@ -69,6 +68,4 @@ public class Asteroid extends Enemy {
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
 
     }
-
 }
-

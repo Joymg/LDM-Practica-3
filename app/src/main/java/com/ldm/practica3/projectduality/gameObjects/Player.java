@@ -20,12 +20,16 @@ public class Player extends Sprite {
     private int maxY;
     private double speedFactor;
 
+    private final int initialLives = 3;
+    public int currentLives;
 
     public Player(GameEngine gameEngine){
         super(gameEngine, R.drawable.ship);
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
+
+        currentLives = initialLives;
 
         initBulletPool(gameEngine);
     }
@@ -96,12 +100,23 @@ public class Player extends Sprite {
 
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
-        if (otherObject instanceof Asteroid) {
+        if (otherObject instanceof Enemy) {
             //gameEngine.removeGameObject(this);
             //gameEngine.stopGame();
-            Asteroid a = (Asteroid) otherObject;
-            a.removeObject(gameEngine);
+            Enemy enemy = (Asteroid) otherObject;
+            enemy.removeObject(gameEngine);
             gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+
+            currentLives--;
+            if (currentLives <= 0){
+                //game over
+                gameEngine.removeGameObject(this);
+
+                //Todo: show game over screen
+                gameEngine.stopGame();
+
+            }
+
         }
     }
 

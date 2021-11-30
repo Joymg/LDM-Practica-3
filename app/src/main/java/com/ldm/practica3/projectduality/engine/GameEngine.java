@@ -20,12 +20,12 @@ public class GameEngine {
     private List<GameObject> objectsToAdd = new ArrayList<GameObject>();
     private List<GameObject> objectsToRemove = new ArrayList<GameObject>();
     private List<Collision> detectedCollisions = new ArrayList<Collision>();
-    private QuadTree quadTree = new QuadTree();
+    private QT quadTree = new QT();
 
     private UpdateThread updateThread;
     private DrawThread drawThread;
     public InputController inputController;
-    private GameView gameView;
+    private final GameView gameView;
 
     public Random random = new Random();
 
@@ -43,7 +43,7 @@ public class GameEngine {
         this.gameView = gameView;
         this.gameView.setGameObjects(this.gameObjects);
 
-        QuadTree.init();
+        quadTree.init();
 
         this.width = this.gameView.getWidth()
                 - this.gameView.getPaddingRight() - this.gameView.getPaddingLeft();
@@ -55,12 +55,7 @@ public class GameEngine {
         this.pixelFactor = this.height / 400d;
     }
 
-    public GameEngine(Activity activity) {
-    }
 
-    public void setInputController(InputController inputController) {
-        this.inputController = inputController;
-    }
 
     public void startGame() {
         // Stop a game if it is running
@@ -182,6 +177,10 @@ public class GameEngine {
 
     public void setSoundManager(SoundManager soundManager) {
         this.soundManager = soundManager;
+    }
+
+    public void setInputController(InputController inputController) {
+        this.inputController = inputController;
     }
 
     public void onGameEvent (GameEvent gameEvent) {
