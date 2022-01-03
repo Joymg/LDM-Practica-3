@@ -3,6 +3,7 @@ package com.ldm.practica3.projectduality.gameObjects;
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
+import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
 import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
 
@@ -24,7 +25,7 @@ public class Player extends Sprite {
     public int currentLives;
 
     public Player(GameEngine gameEngine){
-        super(gameEngine, R.drawable.ship);
+        super(gameEngine, R.drawable.player);
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
@@ -103,7 +104,7 @@ public class Player extends Sprite {
         if (otherObject instanceof Enemy) {
             //gameEngine.removeGameObject(this);
             //gameEngine.stopGame();
-            Enemy enemy = (Asteroid) otherObject;
+            Enemy enemy = (Enemy) otherObject;
             enemy.removeObject(gameEngine);
             gameEngine.onGameEvent(GameEvent.SpaceshipHit);
 

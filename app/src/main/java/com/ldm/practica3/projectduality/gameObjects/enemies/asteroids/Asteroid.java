@@ -1,25 +1,30 @@
-package com.ldm.practica3.projectduality.gameObjects;
+package com.ldm.practica3.projectduality.gameObjects.enemies.asteroids;
 
-import com.ldm.practica3.projectduality.R;
+
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
+import com.ldm.practica3.projectduality.gameObjects.GameController;
+import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
+import com.ldm.practica3.projectduality.gameObjects.enemies.EnemyType;
+
+import java.util.Random;
 
 public class Asteroid extends Enemy {
 
-    private final GameController gameController;
+    protected final GameController gameController;
 
-    private final int asteroidType = 0;
+    public AsteroidType asteroidType;
 
-    private double speed;
-    private double speedX;
-    private double speedY;
-    private double rotationSpeed;
+    protected double speed;
+    protected double speedX;
+    protected double speedY;
+    protected double rotationSpeed;
 
-    public Asteroid(GameController gameController, GameEngine gameEngine) {
-        super(gameController,gameEngine,R.drawable.a10000);
+    public Asteroid(GameController gameController, GameEngine gameEngine,int drawable) {
+        super(gameController, gameEngine, drawable);
         this.speed = 50d * pixelFactor/1000d;
         this.gameController = gameController;
-        enemyType = asteroidType;
+        enemyType = EnemyType.Asteroid;
     }
 
     public void init(GameEngine gameEngine) {
@@ -35,6 +40,20 @@ public class Asteroid extends Enemy {
         rotation = gameEngine.random.nextInt(360);
     }
 
+    public void SpawnAtPosition(double posX, double posY){
+        // They initialize in a [-30, 30] degrees angle
+        Random random = new Random();
+        double angle = random.nextDouble()*Math.PI/3d-Math.PI/6d;
+        speedX = speed * Math.sin(angle);
+        speedY = speed * Math.cos(angle);
+        // Asteroids initialize in the central 50% of the screen horizontally
+        positionX = posX;
+        // They initialize outside of the screen vertically
+        positionY = posY;
+        rotationSpeed = angle*(180d / Math.PI)/250d; // They rotate 4 times their ange in a second.
+        rotation = random.nextInt(360);
+    }
+
     @Override
     public void startGame() {
     }
@@ -42,8 +61,10 @@ public class Asteroid extends Enemy {
 
     public void removeObject(GameEngine gameEngine) {
         // Return to the pool
-        gameEngine.removeGameObject(this);
-        gameController.returnToPool(this);
+        super.removeObject(gameEngine);
+
+        /*gameEngine.removeGameObject(this);
+        gameController.returnToPool(this);*/
     }
 
     @Override
@@ -57,12 +78,10 @@ public class Asteroid extends Enemy {
         else if (rotation < 0) {
             rotation = 360;
         }
-        // Check of the sprite goes out of the screen and return it to the pool if so
-        if (positionY > gameEngine.height) {
-            // Return to the pool
-            gameEngine.removeGameObject(this);
-            gameController.returnToPool(this);
-        }
+
+        super.onUpdate(elapsedMillis,gameEngine);
+
+
     }
 
     @Override

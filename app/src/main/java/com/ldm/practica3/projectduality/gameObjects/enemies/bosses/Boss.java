@@ -1,24 +1,13 @@
-package com.ldm.practica3.projectduality.gameObjects;
+package com.ldm.practica3.projectduality.gameObjects.enemies.bosses;
 
-import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
+import com.ldm.practica3.projectduality.gameObjects.GameController;
+import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
 
-public class Enemy extends Sprite{
-
-    protected final GameController gameController;
-
-    protected double speed;
-    protected double speedX;
-    protected double speedY;
-    protected double rotationSpeed;
-
-    protected int enemyType;
-
-    protected Enemy(GameController gameController, GameEngine gameEngine, int drawable) {
-        super(gameEngine, drawable);
-        this.speed = 50d * pixelFactor/1000d;
-        this.gameController = gameController;
+public abstract class Boss extends Enemy {
+    protected Boss(GameController gameController, GameEngine gameEngine, int drawable) {
+        super(gameController, gameEngine, drawable);
     }
 
     public void init(GameEngine gameEngine) {
