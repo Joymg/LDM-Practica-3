@@ -22,7 +22,7 @@ public class Player extends Sprite {
     private int maxY;
     private double speedFactor;
 
-    private float mobilityFactor = 500;
+    private float mobilityFactor = 700;
     private float maxSpeed = 1000;
     private Vector2 up = new Vector2(0,1);
     private Vector2 right = new Vector2(1,0);
@@ -84,19 +84,19 @@ public class Player extends Sprite {
                 desiredRotation = 360 + desiredRotation;
             }
 
-            FPSDisplay.instance.debugText = desiredRotation+"";
+            //FPSDisplay.instance.debugText = desiredRotation+"";
 
 
             if (desiredRotation > rotation) {
-                rotation += mobilityFactor * elapsedMillis / 1000;
-                if(rotation > 360){
-                    rotation = 0 + (rotation - 360);
-                }
+                if(desiredRotation - rotation < 360 - desiredRotation + rotation)
+                    Rotate(elapsedMillis);
+                else
+                    Rotate(-elapsedMillis);
             } else {
-                rotation -= mobilityFactor * elapsedMillis / 1000;
-                if(rotation < 0){
-                    rotation = 360 + rotation;
-                }
+                if(rotation - desiredRotation < 360 - rotation + desiredRotation)
+                    Rotate(-elapsedMillis);
+                else
+                    Rotate(+elapsedMillis);
             }
 
 
@@ -146,6 +146,16 @@ public class Player extends Sprite {
         }
     }
 
+    private void Rotate(double amount){
+        rotation += mobilityFactor * amount / 1000;
+        if(rotation > 360){
+            rotation = 0 + (rotation - 360);
+        }
+        if(rotation < 0){
+            rotation = 360 + rotation;
+        }
+    }
+
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
         if (gameEngine.inputController.isFiring && timeSinceLastFire > TIME_BETWEEN_BULLETS) {
             Bullet bullet = getBullet();
@@ -178,7 +188,7 @@ public class Player extends Sprite {
                 gameEngine.removeGameObject(this);
 
                 //Todo: show game over screen
-                gameEngine.stopGame();
+                //gameEngine.stopGame();
 
             }
 
