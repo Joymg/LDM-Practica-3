@@ -31,7 +31,7 @@ public class Player extends Sprite {
         maxY = gameEngine.height - height;
 
         currentLives = initialLives;
-
+        gameEngine.SetLives(currentLives);
         initBulletPool(gameEngine);
     }
 
@@ -109,6 +109,7 @@ public class Player extends Sprite {
             gameEngine.onGameEvent(GameEvent.SpaceshipHit);
 
             currentLives--;
+            gameEngine.SetLives(currentLives);
             if (currentLives <= 0){
                 //game over
                 gameEngine.removeGameObject(this);

@@ -4,6 +4,7 @@ import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
 import com.ldm.practica3.projectduality.gameObjects.GameController;
 import com.ldm.practica3.projectduality.gameObjects.Sprite;
+import com.ldm.practica3.projectduality.sound.GameEvent;
 
 public abstract class Enemy extends Sprite {
 
@@ -16,6 +17,7 @@ public abstract class Enemy extends Sprite {
 
     protected int currHealth;
     protected boolean isInvencible;
+    protected int pointsOnKill = 100;
 
     public EnemyType enemyType;
 
@@ -47,6 +49,8 @@ public abstract class Enemy extends Sprite {
             gameController.returnToPool(this);
         }
         if (currHealth <= 0){
+            gameEngine.AddPoints(pointsOnKill);
+            gameEngine.onGameEvent(GameEvent.EnemyKilled);
             removeObject(gameEngine);
         }
     }

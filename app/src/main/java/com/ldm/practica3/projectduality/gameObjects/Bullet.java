@@ -53,6 +53,7 @@ public class Bullet extends Sprite {
             e.GotHit();
             gameEngine.onGameEvent(GameEvent.AsteroidHit);
             // Add some score
+
         }
     }
 }

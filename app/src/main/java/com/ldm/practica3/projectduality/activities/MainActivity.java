@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -25,7 +26,19 @@ import com.ldm.practica3.projectduality.sound.SoundManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG_FRAGMENT = "content";
+    public static final String TAG_FRAGMENT = "content";
+
+
+    private TextView points;
+    private TextView lives;
+
+    public TextView getPointsTextView() {
+        return points;
+    }
+
+    public TextView getLivesTextView() {
+        return lives;
+    }
 
     private SoundManager soundManager;
 
@@ -40,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         }
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         soundManager = new SoundManager(getApplicationContext());
+
+        points= (TextView) findViewById(R.id.points);
+        lives= (TextView) findViewById(R.id.lives);
     }
 
     public SoundManager getSoundManager() {

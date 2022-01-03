@@ -3,7 +3,14 @@ package com.ldm.practica3.projectduality.engine;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
+import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
+import com.ldm.practica3.projectduality.R;
+import com.ldm.practica3.projectduality.activities.MainActivity;
+import com.ldm.practica3.projectduality.fragments.GameFragment;
+import com.ldm.practica3.projectduality.gameObjects.Player;
 import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
 import com.ldm.practica3.projectduality.sound.SoundManager;
@@ -37,6 +44,12 @@ public class GameEngine {
 
     private Activity mainActivity;
 
+    private int points;
+    private int playerLives;
+
+    public TextView pointsTextView;
+    public TextView livesTextView;
+
     public GameEngine(Activity activity, GameView gameView) {
         mainActivity = activity;
 
@@ -53,6 +66,8 @@ public class GameEngine {
         quadTree.setArea(new Rect(0, 0, width, height));
 
         this.pixelFactor = this.height / 400d;
+
+        points =0;
     }
 
 
@@ -183,9 +198,30 @@ public class GameEngine {
         this.inputController = inputController;
     }
 
+    public void setUI(TextView p, TextView l){
+        pointsTextView = p;
+        livesTextView = l;
+    }
+
     public void onGameEvent (GameEvent gameEvent) {
         // We notify all the GameObjects
         // Also the sound manager
         soundManager.playSoundForGameEvent(gameEvent);
+    }
+
+    public void AddPoints(int value){
+        points += value;
+        pointsTextView.setText("Points: " + Integer.toString(points));
+    }
+    public int GetPoints(){
+        return points;
+    }
+    public void SetLives(int value){
+        playerLives = value;
+        livesTextView.setText("Lives: " +Integer.toString(playerLives));
+    }
+
+    public int GetLives(){
+        return playerLives;
     }
 }
