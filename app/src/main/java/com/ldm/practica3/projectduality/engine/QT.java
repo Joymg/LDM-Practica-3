@@ -2,43 +2,44 @@ package com.ldm.practica3.projectduality.engine;
 
 
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuadTree {
+public class QT {
 
     private static final int MAX_QUADTREES = 12;
-    private static int MAX_OBJECTS_TO_CHECK = 8;
+    private static int MAX_OBJECTS_TO_CHECK = 2;
 
     private List<ScreenGameObject> gameObjects = new ArrayList<ScreenGameObject>();
     private Rect area = new Rect();
 
     private Rect tmpRect = new Rect();
 
-    private QuadTree[] children = new QuadTree[4];
+    private QT[] children = new QT[4];
 
-    private static List<QuadTree> quadTreePool = new ArrayList<QuadTree>();
+    private static List<QT> quadTreePool = new ArrayList<QT>();
 
     public static void init() {
         quadTreePool.clear();
         for (int i = 0; i < MAX_QUADTREES; i++) {
-            quadTreePool.add(new QuadTree());
+            quadTreePool.add(new QT());
         }
     }
 
     public void setArea(Rect area) {
-        area.set(area);
+        this.area.set(area);
     }
 
     public void checkObjects(List<ScreenGameObject> gameObjects) {
-        gameObjects.clear();
+        this.gameObjects.clear();
         int numObjects = gameObjects.size();
         for (int i = 0; i < numObjects; i++) {
             ScreenGameObject current = gameObjects.get(i);
             Rect boundingRect = current.mBoundingRect;
             if (Rect.intersects(boundingRect, area)) {
-                gameObjects.add(current);
+                this.gameObjects.add(current);
             }
         }
     }
@@ -121,3 +122,4 @@ public class QuadTree {
         gameObjects.remove(objectToRemove);
     }
 }
+

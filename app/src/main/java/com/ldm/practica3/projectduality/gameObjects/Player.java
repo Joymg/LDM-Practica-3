@@ -4,6 +4,7 @@ import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
 import com.ldm.practica3.projectduality.engine.Vector2;
+import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
 import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
 
@@ -27,6 +28,8 @@ public class Player extends Sprite {
     private Vector2 right = new Vector2(1,0);
     private Vector2 velocity = new Vector2();
 
+    private final int initialLives = 3;
+    public int currentLives;
 
     public Player(GameEngine gameEngine){
         super(gameEngine, R.drawable.player);
@@ -34,6 +37,8 @@ public class Player extends Sprite {
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
 
+        currentLives = initialLives;
+        gameEngine.SetLives(currentLives);
         initBulletPool(gameEngine);
     }
 
@@ -159,12 +164,24 @@ public class Player extends Sprite {
 
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
-        if (otherObject instanceof Asteroid) {
+        if (otherObject instanceof Enemy) {
             //gameEngine.removeGameObject(this);
             //gameEngine.stopGame();
-            Asteroid a = (Asteroid) otherObject;
-            a.removeObject(gameEngine);
-            //gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+            Enemy enemy = (Enemy) otherObject;
+            enemy.removeObject(gameEngine);
+            gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+
+            currentLives--;
+            gameEngine.SetLives(currentLives);
+            if (currentLives <= 0){
+                //game over
+                gameEngine.removeGameObject(this);
+
+                //Todo: show game over screen
+                gameEngine.stopGame();
+
+            }
+
         }
     }
 

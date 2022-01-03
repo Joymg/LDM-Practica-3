@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -21,8 +23,12 @@ import com.ldm.practica3.projectduality.gameObjects.GameController;
 import com.ldm.practica3.projectduality.gameObjects.Player;
 import com.ldm.practica3.projectduality.input.JoystickInputController;
 
+import org.w3c.dom.Text;
+
 public class GameFragment extends BaseFragment implements View.OnClickListener {
     private GameEngine gameEngine;
+    public TextView points;
+    public TextView lives;
 
     public GameFragment() {
     }
@@ -38,6 +44,8 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.btn_play_pause).setOnClickListener(this);
+        /*points= (TextView) view.findViewById(R.id.points);
+        lives= (TextView) view.findViewById(R.id.lives);*/
         final ViewTreeObserver observer = view.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -46,18 +54,30 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 //se elimina el listener en cuanto es llamado
                 observer.removeOnGlobalLayoutListener(this);
                 GameView gameView = (GameView) getView().findViewById(R.id.gameView);
+
+                TextView points= (TextView) view.findViewById(R.id.points);
+                points.setText("Points: 0");
+                TextView lives= (TextView) view.findViewById(R.id.lives);
+
                 gameEngine = new GameEngine(getActivity(), gameView);
                 gameEngine.setSoundManager(((MainActivity) getActivity()).getSoundManager());
                 gameEngine.setInputController(new JoystickInputController(getView()));
+                gameEngine.setUI(points,lives);
                 gameEngine.addGameObject(new Player(gameEngine));
                 gameEngine.addGameObject(new FPSDisplay(gameEngine));
                 gameEngine.addGameObject(new GameController(gameEngine));
                 gameEngine.startGame();
+
+
+
             }
         });
 
 
+
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -121,13 +141,13 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void playOrPause() {
-        Button button = (Button) getView().findViewById(R.id.btn_play_pause);
+        ImageButton button = (ImageButton) getView().findViewById(R.id.btn_play_pause);
         if (gameEngine.isPaused()) {
             gameEngine.resumeGame();
-            button.setText(R.string.pause);
+            //button.setText(R.string.pause);
         } else {
             gameEngine.pauseGame();
-            button.setText(R.string.resume);
+            //button.setText(R.string.resume);
         }
     }
 }

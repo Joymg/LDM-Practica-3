@@ -25,6 +25,8 @@ public abstract class ScreenGameObject extends GameObject {
                 (int) positionY + height);
     }
 
+    //Todo: add body type
+
     public boolean checkCollision(ScreenGameObject otherObject) {
         return checkCircularCollision(otherObject);
     }
