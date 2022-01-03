@@ -9,6 +9,7 @@ import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Player extends Sprite {
@@ -30,6 +31,9 @@ public class Player extends Sprite {
 
     private final int initialLives = 3;
     public int currentLives;
+    public int invincibilityTime = 1000;
+    Date endOfInvincibilityTime;
+
 
     public Player(GameEngine gameEngine){
         super(gameEngine, R.drawable.player);
@@ -64,6 +68,8 @@ public class Player extends Sprite {
     public void startGame() {
         positionX = maxX / 2;
         positionY = maxY / 2;
+
+        endOfInvincibilityTime = new Date(new Date().getTime() + invincibilityTime);
     }
 
     @Override
@@ -107,8 +113,8 @@ public class Player extends Sprite {
 
 
         Vector2 acc = up;
-        acc.x -= (velocity.x* velocity.x)/8000000;
-        acc.y -= (velocity.y* velocity.y)/8000000;
+        acc.x -= (velocity.x* velocity.x)/4000000;
+        acc.y -= (velocity.y* velocity.y)/4000000;
 
 
         velocity.x += acc.x * elapsedMillis * 0.05f;
@@ -157,12 +163,12 @@ public class Player extends Sprite {
     }
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
-        if (gameEngine.inputController.isFiring && timeSinceLastFire > TIME_BETWEEN_BULLETS) {
+        if (timeSinceLastFire > TIME_BETWEEN_BULLETS) {//gameEngine.inputController.isFiring && 
             Bullet bullet = getBullet();
             if (bullet == null) {
                 return;
             }
-            bullet.init(this, positionX + width/2, positionY);
+            bullet.init(this, positionX + width/2, positionY, new Vector2(up.x, up.y));
             gameEngine.addGameObject(bullet);
             timeSinceLastFire = 0;
             gameEngine.onGameEvent(GameEvent.LaserFired);
@@ -175,6 +181,12 @@ public class Player extends Sprite {
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
         if (otherObject instanceof Enemy) {
+
+            if(new Date().before(endOfInvincibilityTime))
+                return;
+
+            endOfInvincibilityTime = new Date(new Date().getTime() + invincibilityTime);
+
             //gameEngine.removeGameObject(this);
             //gameEngine.stopGame();
             Enemy enemy = (Enemy) otherObject;

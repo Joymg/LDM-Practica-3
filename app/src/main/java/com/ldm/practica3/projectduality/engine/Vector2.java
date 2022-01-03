@@ -55,7 +55,6 @@ public class Vector2 {
 
     public static double AngleBetween(Vector2 v, Vector2 w){
         return Math.atan2(w.y - v.y, w.x - v.x);
-
     }
 
     public static double Dot(Vector2 v, Vector2 w){
