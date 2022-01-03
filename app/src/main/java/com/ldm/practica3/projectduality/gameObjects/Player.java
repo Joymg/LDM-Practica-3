@@ -3,6 +3,7 @@ package com.ldm.practica3.projectduality.gameObjects;
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
+import com.ldm.practica3.projectduality.engine.Vector2;
 import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
 
@@ -20,9 +21,15 @@ public class Player extends Sprite {
     private int maxY;
     private double speedFactor;
 
+    private float mobilityFactor = 500;
+    private float maxSpeed = 1000;
+    private Vector2 up = new Vector2(0,1);
+    private Vector2 right = new Vector2(1,0);
+    private Vector2 velocity = new Vector2();
+
 
     public Player(GameEngine gameEngine){
-        super(gameEngine, R.drawable.ship);
+        super(gameEngine, R.drawable.player);
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
@@ -59,22 +66,78 @@ public class Player extends Sprite {
         // Get the info from the inputController
         updatePosition(elapsedMillis, gameEngine.inputController);
         checkFiring(elapsedMillis, gameEngine);
+
     }
 
     private void updatePosition(long elapsedMillis, InputController inputController) {
-        positionX += speedFactor * inputController.horizontalFactor * elapsedMillis;
+        Vector2 input = new Vector2((float)inputController.horizontalFactor,(float)inputController.verticalFactor);
+
+
+        if(input.x > 0.01 || input.y > 0.01 || input.x < -0.01 || input.y < -0.01 ) {
+            double desiredRotation = (Math.atan2(input.y, input.x) * 57.2958) + 90;
+            if(desiredRotation < 0){
+                desiredRotation = 360 + desiredRotation;
+            }
+
+            FPSDisplay.instance.debugText = desiredRotation+"";
+
+
+            if (desiredRotation > rotation) {
+                rotation += mobilityFactor * elapsedMillis / 1000;
+                if(rotation > 360){
+                    rotation = 0 + (rotation - 360);
+                }
+            } else {
+                rotation -= mobilityFactor * elapsedMillis / 1000;
+                if(rotation < 0){
+                    rotation = 360 + rotation;
+                }
+            }
+
+
+        }
+
+
+        up = Vector2.vecFromAngle((float)rotation);
+
+
+        Vector2 acc = up;
+        acc.x -= (velocity.x* velocity.x)/8000000;
+        acc.y -= (velocity.y* velocity.y)/8000000;
+
+
+        velocity.x += acc.x * elapsedMillis * 0.05f;
+        velocity.y += acc.y * elapsedMillis * 0.05f;
+
+        positionX += velocity.x  * elapsedMillis;
+        positionY += velocity.y * elapsedMillis;
+
+
+
+
+        //positionX += speedFactor * inputController.horizontalFactor * elapsedMillis;
         if (positionX < 0) {
             positionX = 0;
-        }
-        if (positionX > maxX) {
+            velocity.x = -.5f *velocity.x;
+            rotation += 90;
+        }else        if (positionX > maxX) {
             positionX = maxX;
-        }
-        positionY += speedFactor * inputController.verticalFactor * elapsedMillis;
-        if (positionY < 0) {
+            velocity.x = -.5f *velocity.x;
+            rotation += 90;
+        }else        if (positionY < 0) {
             positionY = 0;
-        }
-        if (positionY > maxY) {
+            velocity.y = -.5f *velocity.y;
+            rotation += 90;
+        }else         if (positionY > maxY) {
             positionY = maxY;
+            velocity.y = -.5f *velocity.y;
+            rotation += 90;
+        }
+
+        if(velocity.GetMagnitude() > speedFactor){
+            velocity.normalize();
+            velocity.x *= speedFactor;
+            velocity.y *= speedFactor;
         }
     }
 
@@ -97,11 +160,11 @@ public class Player extends Sprite {
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
         if (otherObject instanceof Asteroid) {
-            gameEngine.removeGameObject(this);
+            //gameEngine.removeGameObject(this);
             //gameEngine.stopGame();
             Asteroid a = (Asteroid) otherObject;
             a.removeObject(gameEngine);
-            gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+            //gameEngine.onGameEvent(GameEvent.SpaceshipHit);
         }
     }
 

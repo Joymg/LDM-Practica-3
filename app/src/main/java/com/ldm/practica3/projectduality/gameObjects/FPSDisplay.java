@@ -9,6 +9,9 @@ import com.ldm.practica3.projectduality.engine.GameEngine;
 
 public class FPSDisplay extends GameObject {
 
+    public static FPSDisplay instance;
+    public String debugText = "";
+
     private final float textWidth;
     private final float textHeight;
 
@@ -19,12 +22,17 @@ public class FPSDisplay extends GameObject {
 
     private String framesPerSecondText = "";
 
+    GameEngine gameEngine;
+
     public FPSDisplay(GameEngine gameEngine) {
         paint = new Paint();
         paint.setTextAlign(Paint.Align.CENTER);
         textHeight = (float) (25 * gameEngine.pixelFactor);
         textWidth = (float) (50 * gameEngine.pixelFactor);
         paint.setTextSize(textHeight / 2);
+        this.gameEngine = gameEngine;
+
+        instance = this;
     }
 
     @Override
@@ -47,8 +55,16 @@ public class FPSDisplay extends GameObject {
     public void onDraw(Canvas canvas) {
         paint.setColor(Color.BLACK);
         canvas.drawRect(0, (int) (canvas.getHeight() - textHeight), textWidth, canvas.getHeight(), paint);
+
+        float x = (canvas.getWidth()/2f)+ 50 *(float)gameEngine.inputController.horizontalFactor;
+        float y = (canvas.getHeight()/1.2f)+ 50 *(float)gameEngine.inputController.verticalFactor;
+        canvas.drawCircle(x,y,100,paint);
+
+        canvas.drawText(debugText, canvas.getWidth() / 2, canvas.getHeight()/2, paint);
+
         paint.setColor(Color.WHITE);
         canvas.drawText(framesPerSecondText, textWidth / 2, (int) (canvas.getHeight() - textHeight / 2), paint);
+
         draws++;
     }
 }
