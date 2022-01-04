@@ -56,14 +56,13 @@ public class FPSDisplay extends GameObject {
         paint.setColor(Color.BLACK);
         canvas.drawRect(0, (int) (canvas.getHeight() - textHeight), textWidth, canvas.getHeight(), paint);
 
+        paint.setColor(Color.WHITE);
+        canvas.drawText(framesPerSecondText, textWidth / 2, (int) (canvas.getHeight() - textHeight / 2), paint);
+        canvas.drawText(debugText, canvas.getWidth() / 2, canvas.getHeight()/2, paint);
+
         float x = (canvas.getWidth()/2f)+ 50 *(float)gameEngine.inputController.horizontalFactor;
         float y = (canvas.getHeight()/1.2f)+ 50 *(float)gameEngine.inputController.verticalFactor;
         canvas.drawCircle(x,y,100,paint);
-
-        canvas.drawText(debugText, canvas.getWidth() / 2, canvas.getHeight()/2, paint);
-
-        paint.setColor(Color.WHITE);
-        canvas.drawText(framesPerSecondText, textWidth / 2, (int) (canvas.getHeight() - textHeight / 2), paint);
 
         draws++;
     }

@@ -14,8 +14,8 @@ import java.util.List;
 
 public class Player extends Sprite {
 
-    private static final int INITIAL_BULLET_POOL_AMOUNT = 6;
-    private static final long TIME_BETWEEN_BULLETS = 250;
+    private static final int INITIAL_BULLET_POOL_AMOUNT = 30;
+    private static final long TIME_BETWEEN_BULLETS = 150;
     List<Bullet> bullets = new ArrayList<Bullet>();
     private long timeSinceLastFire;
 
@@ -112,6 +112,7 @@ public class Player extends Sprite {
         up = Vector2.vecFromAngle((float)rotation);
 
 
+        //Vector2 acc = up.multiply(input.GetMagnitude());
         Vector2 acc = up;
         acc.x -= (velocity.x* velocity.x)/4000000;
         acc.y -= (velocity.y* velocity.y)/4000000;
@@ -122,9 +123,6 @@ public class Player extends Sprite {
 
         positionX += velocity.x  * elapsedMillis;
         positionY += velocity.y * elapsedMillis;
-
-
-
 
         //positionX += speedFactor * inputController.horizontalFactor * elapsedMillis;
         if (positionX < 0) {
@@ -163,12 +161,12 @@ public class Player extends Sprite {
     }
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
-        if (timeSinceLastFire > TIME_BETWEEN_BULLETS) {//gameEngine.inputController.isFiring && 
+        if (timeSinceLastFire > TIME_BETWEEN_BULLETS) {//gameEngine.inputController.isFiring &&
             Bullet bullet = getBullet();
             if (bullet == null) {
                 return;
             }
-            bullet.init(this, positionX + width/2, positionY, new Vector2(up.x, up.y));
+            bullet.init(this, positionX + width/2 - (width * up.x), positionY + height/2 - (height * up.y), new Vector2(up.x, up.y));
             gameEngine.addGameObject(bullet);
             timeSinceLastFire = 0;
             gameEngine.onGameEvent(GameEvent.LaserFired);
