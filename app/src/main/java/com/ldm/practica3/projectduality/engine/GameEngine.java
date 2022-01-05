@@ -34,7 +34,7 @@ public class GameEngine {
     public InputController inputController;
     private final GameView gameView;
 
-    public Random random = new Random();
+    public static Random random = new Random();
 
     private SoundManager soundManager;
 
@@ -65,7 +65,7 @@ public class GameEngine {
 
         quadTree.setArea(new Rect(0, 0, width, height));
 
-        this.pixelFactor = this.height / 400d;
+        this.pixelFactor = this.height / 260d;
 
         points =0;
     }
