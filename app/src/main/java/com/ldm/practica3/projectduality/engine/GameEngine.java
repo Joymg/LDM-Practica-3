@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.activities.MainActivity;
 import com.ldm.practica3.projectduality.fragments.GameFragment;
+import com.ldm.practica3.projectduality.gameObjects.HeartContainer;
 import com.ldm.practica3.projectduality.gameObjects.Player;
 import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
@@ -45,10 +46,12 @@ public class GameEngine {
     private Activity mainActivity;
 
     private int points;
-    private int playerLives;
+    private int playerLives =4;
 
     public TextView pointsTextView;
     public TextView livesTextView;
+
+    private List<HeartContainer> heartUI = new ArrayList<HeartContainer>();
 
     public GameEngine(Activity activity, GameView gameView) {
         mainActivity = activity;
@@ -65,9 +68,11 @@ public class GameEngine {
 
         quadTree.setArea(new Rect(0, 0, width, height));
 
-        this.pixelFactor = this.height / 260d;
+        this.pixelFactor = this.height / 278d;
 
         points =0;
+
+
     }
 
 
@@ -89,6 +94,8 @@ public class GameEngine {
         // Start the drawing thread
         drawThread = new DrawThread(this);
         drawThread.start();
+
+
     }
 
     public void stopGame() {
@@ -201,6 +208,13 @@ public class GameEngine {
     public void setUI(TextView p, TextView l){
         pointsTextView = p;
         livesTextView = l;
+
+        for (int i = 0; i < playerLives; i++) {
+            HeartContainer h = new HeartContainer(this);
+            heartUI.add(h);
+            h.init(this,new Vector2(20,(i)*50 +20));
+            gameObjects.add(h);
+        }
     }
 
     public void onGameEvent (GameEvent gameEvent) {
@@ -218,6 +232,8 @@ public class GameEngine {
     }
     public void SetLives(int value){
         playerLives = value;
+//        if (value > 0)
+            removeGameObject(heartUI.remove(heartUI.size()-1));
         livesTextView.setText("Lives: " +Integer.toString(playerLives));
     }
 
