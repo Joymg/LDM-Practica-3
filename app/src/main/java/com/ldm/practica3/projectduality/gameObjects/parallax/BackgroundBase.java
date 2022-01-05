@@ -1,6 +1,5 @@
 package com.ldm.practica3.projectduality.gameObjects.parallax;
 
-import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
 import com.ldm.practica3.projectduality.gameObjects.Sprite;
@@ -13,8 +12,8 @@ public abstract class BackgroundBase extends Sprite {
 
     public BackgroundBase(GameEngine gameEngine, int drawableRes,double speed) {
         super(gameEngine, drawableRes);
+        //pixelFactor = gameEngine.height / 260d;
         speedFactor = speed * pixelFactor / 1000d;
-
     }
 
     @Override

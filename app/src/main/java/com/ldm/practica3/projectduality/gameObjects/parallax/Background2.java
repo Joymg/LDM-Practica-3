@@ -1,9 +1,6 @@
 package com.ldm.practica3.projectduality.gameObjects.parallax;
 
-import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.GameEngine;
-import com.ldm.practica3.projectduality.engine.ScreenGameObject;
-import com.ldm.practica3.projectduality.gameObjects.Sprite;
 
 public class Background2 extends BackgroundBase {
 

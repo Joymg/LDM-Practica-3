@@ -67,7 +67,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 gameEngine = new GameEngine(getActivity(), gameView);
                 gameEngine.setSoundManager(((MainActivity) getActivity()).getSoundManager());
                 gameEngine.setInputController(new JoystickInputController(getView()));
-                gameEngine.setUI(points,lives);
+
 
                 //Parallax Effect
                 gameEngine.addGameObject(new Background1(gameEngine,bg,50));
@@ -76,6 +76,8 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 gameEngine.addGameObject(new Foreground1(gameEngine,fg,20));
                 gameEngine.addGameObject(new Foreground2(gameEngine,fg,20));
                 gameEngine.addGameObject(new Foreground3(gameEngine,fg,20));
+
+                gameEngine.setUI(points,lives);
 
                 gameEngine.addGameObject(new Player(gameEngine));
                 gameEngine.addGameObject(new FPSDisplay(gameEngine));
