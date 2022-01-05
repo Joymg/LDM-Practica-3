@@ -19,8 +19,8 @@ public abstract class RangedEnemy extends Enemy {
     public void init(GameEngine gameEngine) {
         // They initialize in a [-30, 30] degrees angle
         double angle = gameEngine.random.nextDouble()*Math.PI/3d-Math.PI/6d;
-        speedX = speed * Math.sin(angle);
-        speedY = speed * Math.cos(angle);
+        speedX = speedFactor * Math.sin(angle);
+        speedY = speedFactor * Math.cos(angle);
         // Asteroids initialize in the central 50% of the screen horizontally
         positionX = gameEngine.random.nextInt(gameEngine.width/2)+gameEngine.width/4;
         // They initialize outside of the screen vertically

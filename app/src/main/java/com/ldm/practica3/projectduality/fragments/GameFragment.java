@@ -1,6 +1,5 @@
 package com.ldm.practica3.projectduality.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,11 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import androidx.fragment.app.Fragment;
 
 import com.ldm.practica3.projectduality.activities.MainActivity;
 import com.ldm.practica3.projectduality.engine.GameEngine;
@@ -21,11 +17,20 @@ import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.gameObjects.FPSDisplay;
 import com.ldm.practica3.projectduality.gameObjects.GameController;
 import com.ldm.practica3.projectduality.gameObjects.Player;
+import com.ldm.practica3.projectduality.gameObjects.parallax.Background1;
+import com.ldm.practica3.projectduality.gameObjects.parallax.Background2;
+import com.ldm.practica3.projectduality.gameObjects.parallax.Background3;
+import com.ldm.practica3.projectduality.gameObjects.parallax.BackgroundBase;
+import com.ldm.practica3.projectduality.gameObjects.TMPForeground;
+import com.ldm.practica3.projectduality.gameObjects.parallax.Foreground1;
+import com.ldm.practica3.projectduality.gameObjects.parallax.Foreground2;
+import com.ldm.practica3.projectduality.gameObjects.parallax.Foreground3;
 import com.ldm.practica3.projectduality.input.JoystickInputController;
 
-import org.w3c.dom.Text;
-
 public class GameFragment extends BaseFragment implements View.OnClickListener {
+    private final int bg = R.drawable.bg;
+    private final int fg = R.drawable.fg;
+
     private GameEngine gameEngine;
     public TextView points;
     public TextView lives;
@@ -62,7 +67,17 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 gameEngine = new GameEngine(getActivity(), gameView);
                 gameEngine.setSoundManager(((MainActivity) getActivity()).getSoundManager());
                 gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
+
+                //Parallax Effect
+                gameEngine.addGameObject(new Background1(gameEngine,bg,50));
+                gameEngine.addGameObject(new Background2(gameEngine,bg,50));
+                gameEngine.addGameObject(new Background3(gameEngine,bg,50));
+                gameEngine.addGameObject(new Foreground1(gameEngine,fg,20));
+                gameEngine.addGameObject(new Foreground2(gameEngine,fg,20));
+                gameEngine.addGameObject(new Foreground3(gameEngine,fg,20));
+
                 gameEngine.setUI(points,lives);
+
                 gameEngine.addGameObject(new Player(gameEngine));
                 gameEngine.addGameObject(new FPSDisplay(gameEngine));
                 gameEngine.addGameObject(new GameController(gameEngine));

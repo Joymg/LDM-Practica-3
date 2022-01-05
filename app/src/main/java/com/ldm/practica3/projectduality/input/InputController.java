@@ -4,7 +4,7 @@ public class InputController {
     public double horizontalFactor;
     public double verticalFactor;
 
-    public boolean isFiring;
+    public boolean state;
     public void onStart(){
 
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.ldm.practica3.projectduality.engine.GameObject;
 import com.ldm.practica3.projectduality.engine.GameEngine;
+import com.ldm.practica3.projectduality.engine.ScreenGameObject;
 import com.ldm.practica3.projectduality.gameObjects.enemies.asteroids.A_Big;
 import com.ldm.practica3.projectduality.gameObjects.enemies.asteroids.A_Medium;
 import com.ldm.practica3.projectduality.gameObjects.enemies.asteroids.A_Small;
@@ -27,6 +28,8 @@ import java.util.Random;
 public class GameController extends GameObject {
 
     private static final int TIME_BETWEEN_ENEMIES = 1000;
+    private static final int MIN_TIME_BETWEEN_UPGRADES = 10000;
+    private static final int MAX_TIME_BETWEEN_UPGRADES = 20000;
     private long currentMillis;
     private List<Asteroid> asteroidPool = new ArrayList<Asteroid>();
     private List<Enemy> enemyPool = new ArrayList<Enemy>();
@@ -34,11 +37,15 @@ public class GameController extends GameObject {
     private List<A_Small> smallAsteroidPool = new ArrayList<A_Small>();
     private List<A_Medium> mediumAsteroidPool = new ArrayList<A_Medium>();
 
+
+    private List<UpgradeCrate> upgradeCratePool = new ArrayList<UpgradeCrate>();
+
     private GameEngine gameEngine;
 
     /*private List<Enemy> enemyPool = new ArrayList<Enemy>();
     private List<Enemy> enemyPool = new ArrayList<Enemy>();*/
     private int enemiesSpawned;
+    private int lastUpgradetime;
 
     public GameController(GameEngine gameEngine) {
         // We initialize the pool of items now
@@ -47,6 +54,9 @@ public class GameController extends GameObject {
             asteroidPool.add(new A_Big(this, gameEngine));
             mediumAsteroidPool.add(new A_Medium(this, gameEngine));
             smallAsteroidPool.add(new A_Small(this, gameEngine));
+            if (i % 10 == 0) {
+                upgradeCratePool.add(new UpgradeCrate(this, gameEngine));
+            }
         }
 
         FillEnemyPool(20, gameEngine);
@@ -55,8 +65,8 @@ public class GameController extends GameObject {
 
     private void FillEnemyPool(int numEnemies, GameEngine gameEngine) {
         for (int i = 0; i < numEnemies; i++) {
-            Random rand = new Random();
-            switch (rand.nextInt(8)) {
+
+            switch (GameEngine.random.nextInt(8)) {
                 case 0:
                     enemyPool.add(new A_Big(this, gameEngine));
                     break;
@@ -103,22 +113,31 @@ public class GameController extends GameObject {
             // Spawn a new enemy
             Enemy e = enemyPool.remove(0);
 
-            switch (e.enemyType){
+            switch (e.enemyType) {
 
                 case Asteroid:
-                    ((Asteroid)e).init(gameEngine);
+                    ((Asteroid) e).init(gameEngine);
                     break;
                 case Ranged:
-                    ((RangedEnemy)e).init(gameEngine);
+                    ((RangedEnemy) e).init(gameEngine);
                     break;
                 case Melee:
-                    ((MeleeEnemy)e).init(gameEngine);
+                    ((MeleeEnemy) e).init(gameEngine);
                     break;
                 case Boss:
                     break;
             }
             gameEngine.addGameObject(e);
             enemiesSpawned++;
+        }
+
+        long upgradeTimeStamp = lastUpgradetime +  GameEngine.random.nextInt(MAX_TIME_BETWEEN_UPGRADES)
+                + MIN_TIME_BETWEEN_UPGRADES;
+        if (currentMillis > upgradeTimeStamp) {
+            UpgradeCrate upgradeCrate = upgradeCratePool.remove(0);
+            upgradeCrate.init(gameEngine);
+            gameEngine.addGameObject(upgradeCrate);
+            lastUpgradetime += currentMillis;
         }
     }
 
@@ -127,30 +146,38 @@ public class GameController extends GameObject {
         // This game object does not draw anything
     }
 
-    public void returnToPool(Enemy enemy) {
+    public void returnToPool( ScreenGameObject otherObject) {
 
-        switch (enemy.enemyType) {
-            case Asteroid:
-                switch (((Asteroid) enemy).asteroidType){
+        if (otherObject instanceof Enemy){
+            Enemy enemy = (Enemy) otherObject;
+            switch (enemy.enemyType) {
+                case Asteroid:
+                    switch (((Asteroid) enemy).asteroidType) {
 
-                    case Big:
-                        asteroidPool.add((Asteroid) enemy);
-                        break;
-                    case Medium:
-                        mediumAsteroidPool.add((A_Medium) enemy);
-                        break;
-                    case Small:
-                        smallAsteroidPool.add((A_Small) enemy);
-                        break;
-                }
-                break;
-            case Ranged:
-            case Melee:
-                enemyPool.add(enemy);
-                break;
-            case Boss:
-                break;
+                        case Big:
+                            enemyPool.add((Asteroid) enemy);
+                            break;
+                        case Medium:
+                            mediumAsteroidPool.add((A_Medium) enemy);
+                            break;
+                        case Small:
+                            smallAsteroidPool.add((A_Small) enemy);
+                            break;
+                    }
+                    break;
+                case Ranged:
+                case Melee:
+                    enemyPool.add(enemy);
+                    break;
+                case Boss:
+                    break;
+            }
         }
+        else if (otherObject instanceof UpgradeCrate){
+            upgradeCratePool.add((UpgradeCrate) otherObject);
+        }
+
+
     }
 
     public void onAsteroidDestroyed(AsteroidType asteroidType, double asteroidPosX, double asteroidPosY) {
@@ -179,4 +206,6 @@ public class GameController extends GameObject {
                 break;
         }
     }
+
+
 }

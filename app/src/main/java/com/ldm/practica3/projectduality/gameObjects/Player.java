@@ -1,9 +1,17 @@
 package com.ldm.practica3.projectduality.gameObjects;
 
+import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+
+import androidx.annotation.DrawableRes;
+
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
 import com.ldm.practica3.projectduality.engine.Vector2;
+import com.ldm.practica3.projectduality.engine.components.Faction;
+import com.ldm.practica3.projectduality.engine.components.MatterState;
 import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
 import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
@@ -12,10 +20,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Player extends Sprite {
+public class Player extends Actor {
 
     private static final int INITIAL_BULLET_POOL_AMOUNT = 30;
     private static final long TIME_BETWEEN_BULLETS = 150;
+    private static final int INITIAL_LIVES = 3;
     List<Bullet> bullets = new ArrayList<Bullet>();
     private long timeSinceLastFire;
 
@@ -29,10 +38,13 @@ public class Player extends Sprite {
     private Vector2 right = new Vector2(1, 0);
     private Vector2 velocity = new Vector2();
 
-    private final int initialLives = 3;
-    public int currentLives;
+    public int currHealth;
     public int invincibilityTime = 1000;
     Date endOfInvincibilityTime;
+    public int bulletPerShot = 1 ;
+
+    final int originalState =R.drawable.player;
+    final int variantState = R.drawable.heart;
 
 
     public Player(GameEngine gameEngine) {
@@ -41,9 +53,12 @@ public class Player extends Sprite {
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
 
-        currentLives = initialLives;
-        gameEngine.SetLives(currentLives);
+        currHealth = INITIAL_LIVES;
+        gameEngine.SetLives(currHealth);
         initBulletPool(gameEngine);
+
+        faction = Faction.Republic;
+        state = MatterState.Determined;
     }
 
     private void initBulletPool(GameEngine gameEngine) {
@@ -77,7 +92,16 @@ public class Player extends Sprite {
         // Get the info from the inputController
         updatePosition(elapsedMillis, gameEngine.inputController);
         checkFiring(elapsedMillis, gameEngine);
+        checkStateChange(gameEngine);
 
+    }
+
+    private void checkStateChange( GameEngine gameEngine) {
+        state = gameEngine.inputController.state ? MatterState.Determined: MatterState.Quantic;
+        Resources r = gameEngine.getContext().getResources();
+        Drawable spriteDrawable = gameEngine.inputController.state ?
+                r.getDrawable(originalState):r.getDrawable(variantState);
+        bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
     }
 
     private void updatePosition(long elapsedMillis, InputController inputController) {
@@ -162,12 +186,15 @@ public class Player extends Sprite {
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
         if (timeSinceLastFire > TIME_BETWEEN_BULLETS) {//gameEngine.inputController.isFiring &&
-            Bullet bullet = getBullet();
-            if (bullet == null) {
-                return;
+            for (int i = 0; i < bulletPerShot; i++) {
+                Bullet bullet = getBullet();
+                if (bullet == null) {
+                    return;
+                }
+                //TODO: make diferent shoots
+                bullet.init(this, positionX + width/2 - (width * up.x), positionY + height/2 - (height * up.y), new Vector2(up.x, up.y));
+                gameEngine.addGameObject(bullet);
             }
-            bullet.init(this, positionX + width / 2 - (width * up.x), positionY + height / 2 - (height * up.y), new Vector2(up.x, up.y));
-            gameEngine.addGameObject(bullet);
             timeSinceLastFire = 0;
             gameEngine.onGameEvent(GameEvent.LaserFired);
         } else {
@@ -190,9 +217,9 @@ public class Player extends Sprite {
             enemy.removeObject(gameEngine);
             gameEngine.onGameEvent(GameEvent.SpaceshipHit);
 
-            currentLives--;
-            gameEngine.SetLives(currentLives);
-            if (currentLives <= 0) {
+            currHealth--;
+            gameEngine.SetLives(currHealth);
+            if (currHealth <= 0){
                 //game over
                 gameEngine.removeGameObject(this);
 

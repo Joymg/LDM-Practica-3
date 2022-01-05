@@ -18,7 +18,7 @@ public abstract class Sprite extends ScreenGameObject {
 
     protected double pixelFactor;
 
-    private final Bitmap bitmap;
+    protected Bitmap bitmap;
 
     private final Matrix matrix = new Matrix();
 
@@ -49,14 +49,26 @@ public abstract class Sprite extends ScreenGameObject {
         matrix.postTranslate((float) positionX, (float) positionY);
         matrix.postRotate((float) rotation, (float) (positionX + width/2), (float) (positionY + height/2));
 
-
-        canvas.drawBitmap(bitmap, matrix, null);
+        /*if (this instanceof Actor){
+            switch (((Actor) this).state) {
+                case Determined:
+                    canvas.drawBitmap(bitmap, matrix, null);
+                    break;
+                case Quantic:
+                    Paint paint = new Paint();
+                    paint.setColor(Color.rgb(0,255,0));
+                    canvas.drawBitmap(bitmap, matrix, new Paint(Color.GREEN));
+                    break;
+            }
+        }
+        else*/
+            canvas.drawBitmap(bitmap, matrix, null);
         //Shows collider
-        Paint paint = new Paint();
+       /* Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.rgb(255,0,0));
         paint.setStrokeWidth(2);
-        canvas.drawRect(this.mBoundingRect, paint);
+        canvas.drawRect(this.mBoundingRect, paint);*/
 
     }
 }

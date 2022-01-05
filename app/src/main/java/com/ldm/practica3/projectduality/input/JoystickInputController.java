@@ -69,10 +69,11 @@ public class JoystickInputController extends InputController {
         public boolean onTouch(View v, MotionEvent event) {
             int action = event.getActionMasked();
             if (action == MotionEvent.ACTION_DOWN) {
-                isFiring = true;
-            } else if (action == MotionEvent.ACTION_UP) {
-                isFiring = false;
+                state = !state;
             }
+            /*else if (action == MotionEvent.ACTION_UP) {
+                changeState = false;
+            }*/
             return true;
         }
     }
