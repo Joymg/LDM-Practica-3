@@ -25,8 +25,8 @@ public class Player extends Sprite {
 
     private float mobilityFactor = 700;
     private float maxSpeed = 1000;
-    private Vector2 up = new Vector2(0,1);
-    private Vector2 right = new Vector2(1,0);
+    private Vector2 up = new Vector2(0, 1);
+    private Vector2 right = new Vector2(1, 0);
     private Vector2 velocity = new Vector2();
 
     private final int initialLives = 3;
@@ -35,7 +35,7 @@ public class Player extends Sprite {
     Date endOfInvincibilityTime;
 
 
-    public Player(GameEngine gameEngine){
+    public Player(GameEngine gameEngine) {
         super(gameEngine, R.drawable.player);
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
@@ -47,7 +47,7 @@ public class Player extends Sprite {
     }
 
     private void initBulletPool(GameEngine gameEngine) {
-        for (int i=0; i<INITIAL_BULLET_POOL_AMOUNT; i++) {
+        for (int i = 0; i < INITIAL_BULLET_POOL_AMOUNT; i++) {
             bullets.add(new Bullet(gameEngine));
         }
     }
@@ -81,12 +81,12 @@ public class Player extends Sprite {
     }
 
     private void updatePosition(long elapsedMillis, InputController inputController) {
-        Vector2 input = new Vector2((float)inputController.horizontalFactor,(float)inputController.verticalFactor);
+        Vector2 input = new Vector2((float) inputController.horizontalFactor, (float) inputController.verticalFactor);
 
 
-        if(input.x > 0.01 || input.y > 0.01 || input.x < -0.01 || input.y < -0.01 ) {
+        if (input.x > 0.01 || input.y > 0.01 || input.x < -0.01 || input.y < -0.01) {
             double desiredRotation = (Math.atan2(input.y, input.x) * 57.2958) + 90;
-            if(desiredRotation < 0){
+            if (desiredRotation < 0) {
                 desiredRotation = 360 + desiredRotation;
             }
 
@@ -94,12 +94,12 @@ public class Player extends Sprite {
 
 
             if (desiredRotation > rotation) {
-                if(desiredRotation - rotation < 360 - desiredRotation + rotation)
+                if (desiredRotation - rotation < 360 - desiredRotation + rotation)
                     Rotate(elapsedMillis);
                 else
                     Rotate(-elapsedMillis);
             } else {
-                if(rotation - desiredRotation < 360 - rotation + desiredRotation)
+                if (rotation - desiredRotation < 360 - rotation + desiredRotation)
                     Rotate(-elapsedMillis);
                 else
                     Rotate(+elapsedMillis);
@@ -109,53 +109,53 @@ public class Player extends Sprite {
         }
 
 
-        up = Vector2.vecFromAngle((float)rotation);
+        up = Vector2.vecFromAngle((float) rotation);
 
 
         //Vector2 acc = up.multiply(input.GetMagnitude());
         Vector2 acc = up;
-        acc.x -= (velocity.x* velocity.x)/4000000;
-        acc.y -= (velocity.y* velocity.y)/4000000;
+        acc.x -= (velocity.x * velocity.x) / 4000000;
+        acc.y -= (velocity.y * velocity.y) / 4000000;
 
 
         velocity.x += acc.x * elapsedMillis * 0.05f;
         velocity.y += acc.y * elapsedMillis * 0.05f;
 
-        positionX += velocity.x  * elapsedMillis;
+        positionX += velocity.x * elapsedMillis;
         positionY += velocity.y * elapsedMillis;
 
         //positionX += speedFactor * inputController.horizontalFactor * elapsedMillis;
         if (positionX < 0) {
             positionX = 0;
-            velocity.x = -.5f *velocity.x;
+            velocity.x = -.5f * velocity.x;
             rotation += 90;
-        }else        if (positionX > maxX) {
+        } else if (positionX > maxX) {
             positionX = maxX;
-            velocity.x = -.5f *velocity.x;
+            velocity.x = -.5f * velocity.x;
             rotation += 90;
-        }else        if (positionY < 0) {
+        } else if (positionY < 0) {
             positionY = 0;
-            velocity.y = -.5f *velocity.y;
+            velocity.y = -.5f * velocity.y;
             rotation += 90;
-        }else         if (positionY > maxY) {
+        } else if (positionY > maxY) {
             positionY = maxY;
-            velocity.y = -.5f *velocity.y;
+            velocity.y = -.5f * velocity.y;
             rotation += 90;
         }
 
-        if(velocity.GetMagnitude() > speedFactor){
+        if (velocity.GetMagnitude() > speedFactor) {
             velocity.normalize();
             velocity.x *= speedFactor;
             velocity.y *= speedFactor;
         }
     }
 
-    private void Rotate(double amount){
+    private void Rotate(double amount) {
         rotation += mobilityFactor * amount / 1000;
-        if(rotation > 360){
+        if (rotation > 360) {
             rotation = 0 + (rotation - 360);
         }
-        if(rotation < 0){
+        if (rotation < 0) {
             rotation = 360 + rotation;
         }
     }
@@ -166,12 +166,11 @@ public class Player extends Sprite {
             if (bullet == null) {
                 return;
             }
-            bullet.init(this, positionX + width/2 - (width * up.x), positionY + height/2 - (height * up.y), new Vector2(up.x, up.y));
+            bullet.init(this, positionX + width / 2 - (width * up.x), positionY + height / 2 - (height * up.y), new Vector2(up.x, up.y));
             gameEngine.addGameObject(bullet);
             timeSinceLastFire = 0;
             gameEngine.onGameEvent(GameEvent.LaserFired);
-        }
-        else {
+        } else {
             timeSinceLastFire += elapsedMillis;
         }
     }
@@ -180,7 +179,7 @@ public class Player extends Sprite {
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
         if (otherObject instanceof Enemy) {
 
-            if(new Date().before(endOfInvincibilityTime))
+            if (new Date().before(endOfInvincibilityTime))
                 return;
 
             endOfInvincibilityTime = new Date(new Date().getTime() + invincibilityTime);
@@ -193,7 +192,7 @@ public class Player extends Sprite {
 
             currentLives--;
             gameEngine.SetLives(currentLives);
-            if (currentLives <= 0){
+            if (currentLives <= 0) {
                 //game over
                 gameEngine.removeGameObject(this);
 

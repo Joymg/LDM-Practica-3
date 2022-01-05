@@ -39,4 +39,9 @@ public abstract class ScreenGameObject extends GameObject {
         return squareDistance <= collisionDistance*collisionDistance;
     }
 
+    public void SetPos(double x, double y){
+        positionX = x - width/2;
+        positionY = y - height/2;
+    }
+
 }

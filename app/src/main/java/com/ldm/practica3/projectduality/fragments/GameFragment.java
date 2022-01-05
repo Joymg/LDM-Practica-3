@@ -61,7 +61,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
 
                 gameEngine = new GameEngine(getActivity(), gameView);
                 gameEngine.setSoundManager(((MainActivity) getActivity()).getSoundManager());
-                gameEngine.setInputController(new JoystickInputController(getView()));
+                gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
                 gameEngine.setUI(points,lives);
                 gameEngine.addGameObject(new Player(gameEngine));
                 gameEngine.addGameObject(new FPSDisplay(gameEngine));
