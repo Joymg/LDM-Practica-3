@@ -173,19 +173,19 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
         int[] resources = new int[2];
         switch (shipSelection) {
             case ship0:
-                resources[0] = R.drawable.player;
-                resources[1] = R.drawable.heart;
+                resources[0] = R.drawable.player1;
+                resources[1] = R.drawable.player1inv;
                 break;
             case ship1:
-                resources[0] = R.drawable.a10000;
-                resources[1] = R.drawable.robot;
+                resources[0] = R.drawable.player2;
+                resources[1] = R.drawable.player2inv;
                 break;
             case ship2:
-                resources[0] = R.drawable.boss1;
-                resources[1] = R.drawable.boss2;
+                resources[0] = R.drawable.player3;
+                resources[1] = R.drawable.player3inv;
                 break;
             default:
-                resources[0] = R.drawable.player;
+                resources[0] = R.drawable.player1;
                 resources[1] = R.drawable.heart;
                 break;
         }
