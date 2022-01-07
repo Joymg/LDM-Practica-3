@@ -7,7 +7,7 @@ import com.ldm.practica3.projectduality.gameObjects.GameController;
 
 public class BE_R_Faye extends RangedEnemy{
     public BE_R_Faye(GameController gameController, GameEngine gameEngine) {
-        super(gameController, gameEngine, R.drawable.enemy2);
+        super(gameController, gameEngine, R.drawable.faye);
         initBulletPool(gameEngine, R.drawable.bullet1);
     }
 

@@ -19,7 +19,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
 
     ImageView shipImage;
     boolean secondShip;
-    int chosenPlayerImage = R.drawable.player;
+    int chosenPlayerImage = R.drawable.player1;
     ShipSelection shipSelection;
     int shipSelectionCounter;
 
@@ -54,13 +54,13 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
                 shipSelection = ShipSelection.values()[shipSelectionCounter];
                 switch (shipSelection) {
                     case ship0:
-                        shipImage.setImageResource(R.drawable.player);
+                        shipImage.setImageResource(R.drawable.player1);
                         break;
                     case ship1:
-                        shipImage.setImageResource(R.drawable.a10000);
+                        shipImage.setImageResource(R.drawable.player2);
                         break;
                     case ship2:
-                        shipImage.setImageResource(R.drawable.ic_launcher_foreground);
+                        shipImage.setImageResource(R.drawable.player3);
                         break;
                 }
 
@@ -79,13 +79,13 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
                 shipSelection = ShipSelection.values()[shipSelectionCounter];
                 switch (shipSelection) {
                     case ship0:
-                        shipImage.setImageResource(R.drawable.player);
+                        shipImage.setImageResource(R.drawable.player1);
                         break;
                     case ship1:
-                        shipImage.setImageResource(R.drawable.a10000);
+                        shipImage.setImageResource(R.drawable.player2);
                         break;
                     case ship2:
-                        shipImage.setImageResource(R.drawable.ic_launcher_foreground);
+                        shipImage.setImageResource(R.drawable.player3);
                         break;
                 }
             }

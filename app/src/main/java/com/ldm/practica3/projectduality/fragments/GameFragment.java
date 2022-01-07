@@ -69,17 +69,18 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
 
                 gameEngine = new GameEngine(getActivity(), gameView);
                 gameEngine.setSoundManager(((MainActivity) getActivity()).getSoundManager());
-                gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
 
                 //Parallax Effect
                 gameEngine.addGameObject(new Background1(gameEngine,bg,20));
                 gameEngine.addGameObject(new Background2(gameEngine,bg,20));
                 gameEngine.addGameObject(new Background3(gameEngine,bg,20));
+
                 gameEngine.addGameObject(new Foreground1(gameEngine,fg,50));
                 gameEngine.addGameObject(new Foreground2(gameEngine,fg,50));
                 gameEngine.addGameObject(new Foreground3(gameEngine,fg,50));
 
                 gameEngine.setUI(points,lives);
+                gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
 
                 gameEngine.addGameObject(new Player(gameEngine,PlayerPreparations()));
                 gameEngine.addGameObject(new FPSDisplay(gameEngine));
@@ -173,19 +174,19 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
         int[] resources = new int[2];
         switch (shipSelection) {
             case ship0:
-                resources[0] = R.drawable.player;
-                resources[1] = R.drawable.heart;
+                resources[0] = R.drawable.player1;
+                resources[1] = R.drawable.player1inv;
                 break;
             case ship1:
-                resources[0] = R.drawable.a10000;
-                resources[1] = R.drawable.robot;
+                resources[0] = R.drawable.player2;
+                resources[1] = R.drawable.player2inv;
                 break;
             case ship2:
-                resources[0] = R.drawable.boss1;
-                resources[1] = R.drawable.boss2;
+                resources[0] = R.drawable.player3;
+                resources[1] = R.drawable.player3inv;
                 break;
             default:
-                resources[0] = R.drawable.player;
+                resources[0] = R.drawable.player1;
                 resources[1] = R.drawable.heart;
                 break;
         }

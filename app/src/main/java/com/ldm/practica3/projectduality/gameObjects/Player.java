@@ -30,8 +30,8 @@ public class Player extends Actor {
     private int maxY;
     private double speedFactor;
 
-    private float mobilityFactor = 700;
-    private float maxSpeed = 1000;
+    private float mobilityFactor = 1000;
+    private float maxSpeed = 500;
     private Vector2 up = new Vector2(0, 1);
     private Vector2 right = new Vector2(1, 0);
     private Vector2 velocity = new Vector2();

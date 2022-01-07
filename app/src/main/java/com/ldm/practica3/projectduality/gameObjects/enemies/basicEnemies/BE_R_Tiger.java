@@ -6,7 +6,7 @@ import com.ldm.practica3.projectduality.gameObjects.GameController;
 
 public class BE_R_Tiger extends RangedEnemy{
     public BE_R_Tiger(GameController gameController, GameEngine gameEngine) {
-        super(gameController, gameEngine, R.drawable.enemy3);
+        super(gameController, gameEngine, R.drawable.tiger);
         initBulletPool(gameEngine, R.drawable.bullet3);
     }
 
