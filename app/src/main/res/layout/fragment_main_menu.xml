@@ -90,7 +90,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_start"
             app:layout_constraintEnd_toStartOf="@+id/btn_nave_dcha"
             app:layout_constraintStart_toEndOf="@+id/btn_nave_izda"
-            app:srcCompat="@drawable/player" />
+            app:srcCompat="@drawable/player1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

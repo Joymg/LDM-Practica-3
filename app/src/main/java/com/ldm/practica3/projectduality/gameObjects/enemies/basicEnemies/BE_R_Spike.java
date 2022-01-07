@@ -6,7 +6,7 @@ import com.ldm.practica3.projectduality.gameObjects.GameController;
 
 public class BE_R_Spike extends RangedEnemy {
     public BE_R_Spike(GameController gameController, GameEngine gameEngine) {
-        super(gameController, gameEngine, R.drawable.enemy1);
+        super(gameController, gameEngine, R.drawable.spike);
     }
 
     public void init(GameEngine gameEngine){
