@@ -19,7 +19,7 @@ public class JoystickInputController extends InputController {
 
     public JoystickInputController(View view, GameEngine gameEngine) {
         view.findViewById(R.id.joystick_main).setOnTouchListener(new JoystickTouchListener());
-        view.findViewById(R.id.joystick_touch).setOnTouchListener(new FireButtonTouchListener());
+        view.findViewById(R.id.joystick_touch2).setOnTouchListener(new FireButtonTouchListener());
 
         double pixelFactor = view.getHeight() / 400d;
         maxDistance = 25 * pixelFactor;
