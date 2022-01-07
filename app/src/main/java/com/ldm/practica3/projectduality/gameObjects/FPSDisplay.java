@@ -1,9 +1,16 @@
 package com.ldm.practica3.projectduality.gameObjects;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 
+import androidx.core.content.res.ResourcesCompat;
+
+import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.GameObject;
 import com.ldm.practica3.projectduality.engine.GameEngine;
 
@@ -59,10 +66,6 @@ public class FPSDisplay extends GameObject {
         paint.setColor(Color.WHITE);
         canvas.drawText(framesPerSecondText, textWidth / 2, (int) (canvas.getHeight() - textHeight / 2), paint);
         canvas.drawText(debugText, canvas.getWidth() / 2, canvas.getHeight()/2, paint);
-
-        float x = (canvas.getWidth()/2f)+ 50 *(float)gameEngine.inputController.horizontalFactor;
-        float y = (canvas.getHeight()/1.2f)+ 50 *(float)gameEngine.inputController.verticalFactor;
-        canvas.drawCircle(x,y,100,paint);
 
         draws++;
     }
