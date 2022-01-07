@@ -19,6 +19,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.databinding.ActivityMainBinding;
+import com.ldm.practica3.projectduality.engine.components.ShipSelection;
 import com.ldm.practica3.projectduality.fragments.BaseFragment;
 import com.ldm.practica3.projectduality.fragments.GameFragment;
 import com.ldm.practica3.projectduality.fragments.MainMenuFragment;
@@ -62,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
         return soundManager;
     }
 
-    public void startGame() {
+    public void startGame(ShipSelection shipSelection) {
         // Navigate the the game fragment, which makes the start automatically
-        navigateToFragment( new GameFragment());
+        navigateToFragment( new GameFragment(shipSelection));
     }
 
     private void navigateToFragment(Fragment dst) {

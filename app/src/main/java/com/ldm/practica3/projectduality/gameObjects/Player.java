@@ -12,6 +12,7 @@ import com.ldm.practica3.projectduality.engine.ScreenGameObject;
 import com.ldm.practica3.projectduality.engine.Vector2;
 import com.ldm.practica3.projectduality.engine.components.Faction;
 import com.ldm.practica3.projectduality.engine.components.MatterState;
+import com.ldm.practica3.projectduality.engine.components.ShipSelection;
 import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
 import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
@@ -43,15 +44,20 @@ public class Player extends Actor {
     Date endOfInvincibilityTime;
     public int bulletPerShot = 1 ;
 
-    final int originalState =R.drawable.player;
-    final int variantState = R.drawable.heart;
+    MatterState lastState;
+
+    int originalState;
+    int variantState;
 
 
-    public Player(GameEngine gameEngine) {
-        super(gameEngine, R.drawable.player);
+    public Player(GameEngine gameEngine, int[] resources ) {
+        super(gameEngine, resources[0]);
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
+
+        originalState = resources[0];
+        variantState = resources[1];
 
         currHealth = INITIAL_LIVES;
         gameEngine.SetLives(currHealth);
@@ -59,6 +65,7 @@ public class Player extends Actor {
 
         faction = Faction.Republic;
         state = MatterState.Determined;
+        lastState =state;
     }
 
     private void initBulletPool(GameEngine gameEngine) {
@@ -97,11 +104,15 @@ public class Player extends Actor {
     }
 
     private void checkStateChange( GameEngine gameEngine) {
-        state = gameEngine.inputController.state ? MatterState.Determined: MatterState.Quantic;
-        Resources r = gameEngine.getContext().getResources();
-        Drawable spriteDrawable = gameEngine.inputController.state ?
-                r.getDrawable(originalState):r.getDrawable(variantState);
-        bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
+        state = gameEngine.inputController.state ? MatterState.Quantic: MatterState.Determined;
+
+        if (state != lastState){
+            lastState = state;
+            Resources r = gameEngine.getContext().getResources();
+            Drawable spriteDrawable = gameEngine.inputController.state ?
+                    r.getDrawable(variantState):r.getDrawable(originalState);
+            bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
+        }
     }
 
     private void updatePosition(long elapsedMillis, InputController inputController) {
