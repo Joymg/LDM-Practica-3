@@ -7,21 +7,22 @@ import com.ldm.practica3.projectduality.engine.Vector2;
 import com.ldm.practica3.projectduality.engine.components.Faction;
 import com.ldm.practica3.projectduality.engine.components.MatterState;
 import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
+import com.ldm.practica3.projectduality.gameObjects.enemies.basicEnemies.RangedEnemy;
 import com.ldm.practica3.projectduality.sound.GameEvent;
 
 public class Bullet extends Sprite {
 
     private double speedFactor;
 
-    private Player parent;
+    private Actor parent;
     private Vector2 dir = new Vector2();
 
-    private Faction faction;
-    private MatterState state;
+    public Faction faction;
+    public MatterState state;
 
 
-    public Bullet(GameEngine gameEngine){
-        super(gameEngine, R.drawable.playerbullet);
+    public Bullet(GameEngine gameEngine, int bulletDrawableRes){
+        super(gameEngine, bulletDrawableRes);
 
         speedFactor = gameEngine.pixelFactor * -200d / 1000d;
 
@@ -41,34 +42,51 @@ public class Bullet extends Sprite {
         if (positionY < -height || positionY > gameEngine.height || positionX > gameEngine.width || positionX < 0) {
             gameEngine.removeGameObject(this);
             // And return it to the pool
-            parent.releaseBullet(this);
+            if (parent instanceof Player){
+                ((Player) parent).releaseBullet(this);
+            }
+            else if (parent instanceof RangedEnemy){
+                ((RangedEnemy) parent).releaseBullet(this);
+            }
         }
     }
 
 
-    public void init(Player parentPlayer, double initPositionX, double initPositionY) {
+    public void init(Actor parentPlayer, double initPositionX, double initPositionY) {
         positionX = initPositionX - width/2;
         positionY = initPositionY - height/2;
         dir.x = 0;
         dir.y = 1;
         parent = parentPlayer;
+        faction = parent.faction;
+        state = parent.state;
     }
 
-    public void init(Player parentPlayer, double initPositionX, double initPositionY, Vector2 dir) {
+    public void init(Actor parentPlayer, double initPositionX, double initPositionY, Vector2 dir) {
         positionX = initPositionX - width/2;
         positionY = initPositionY - height/2;
         this.dir = dir;
         parent = parentPlayer;
+        faction = parent.faction;
+        state = parent.state;
     }
 
-    private void removeObject(GameEngine gameEngine) {
+    public void removeObject(GameEngine gameEngine) {
         gameEngine.removeGameObject(this);
         // And return it to the pool
-        parent.releaseBullet(this);
+        if (parent instanceof Player){
+            ((Player) parent).releaseBullet(this);
+        }
+        else if (parent instanceof RangedEnemy){
+            ((RangedEnemy) parent).releaseBullet(this);
+        }
     }
 
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
+        if (otherObject instanceof Player){
+            return;
+        }
         if (otherObject instanceof Actor) {
             if (((Actor) otherObject).faction != faction){
                 if (((Actor) otherObject).state == state){
