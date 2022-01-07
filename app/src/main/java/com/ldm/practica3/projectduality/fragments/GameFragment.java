@@ -14,6 +14,7 @@ import com.ldm.practica3.projectduality.activities.MainActivity;
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.GameView;
 import com.ldm.practica3.projectduality.R;
+import com.ldm.practica3.projectduality.engine.components.ShipSelection;
 import com.ldm.practica3.projectduality.gameObjects.FPSDisplay;
 import com.ldm.practica3.projectduality.gameObjects.GameController;
 import com.ldm.practica3.projectduality.gameObjects.Player;
@@ -34,8 +35,10 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
     private GameEngine gameEngine;
     public TextView points;
     public TextView lives;
+    ShipSelection shipSelection;
 
-    public GameFragment() {
+    public GameFragment(ShipSelection selectedShip) {
+        this.shipSelection = selectedShip;
     }
 
     @Override
@@ -69,16 +72,16 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
 
                 //Parallax Effect
-                gameEngine.addGameObject(new Background1(gameEngine,bg,50));
-                gameEngine.addGameObject(new Background2(gameEngine,bg,50));
-                gameEngine.addGameObject(new Background3(gameEngine,bg,50));
-                gameEngine.addGameObject(new Foreground1(gameEngine,fg,20));
-                gameEngine.addGameObject(new Foreground2(gameEngine,fg,20));
-                gameEngine.addGameObject(new Foreground3(gameEngine,fg,20));
+                gameEngine.addGameObject(new Background1(gameEngine,bg,20));
+                gameEngine.addGameObject(new Background2(gameEngine,bg,20));
+                gameEngine.addGameObject(new Background3(gameEngine,bg,20));
+                gameEngine.addGameObject(new Foreground1(gameEngine,fg,50));
+                gameEngine.addGameObject(new Foreground2(gameEngine,fg,50));
+                gameEngine.addGameObject(new Foreground3(gameEngine,fg,50));
 
                 gameEngine.setUI(points,lives);
 
-                gameEngine.addGameObject(new Player(gameEngine));
+                gameEngine.addGameObject(new Player(gameEngine,PlayerPreparations()));
                 gameEngine.addGameObject(new FPSDisplay(gameEngine));
                 gameEngine.addGameObject(new GameController(gameEngine));
                 gameEngine.startGame();
@@ -164,5 +167,28 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
             gameEngine.pauseGame();
             //button.setText(R.string.resume);
         }
+    }
+
+    private int[] PlayerPreparations(){
+        int[] resources = new int[2];
+        switch (shipSelection) {
+            case ship0:
+                resources[0] = R.drawable.player;
+                resources[1] = R.drawable.heart;
+                break;
+            case ship1:
+                resources[0] = R.drawable.a10000;
+                resources[1] = R.drawable.robot;
+                break;
+            case ship2:
+                resources[0] = R.drawable.boss1;
+                resources[1] = R.drawable.boss2;
+                break;
+            default:
+                resources[0] = R.drawable.player;
+                resources[1] = R.drawable.heart;
+                break;
+        }
+        return resources;
     }
 }
