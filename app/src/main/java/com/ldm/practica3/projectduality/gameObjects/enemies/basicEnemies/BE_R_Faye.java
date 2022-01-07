@@ -6,7 +6,7 @@ import com.ldm.practica3.projectduality.gameObjects.GameController;
 
 public class BE_R_Faye extends MeleeEnemy{
     public BE_R_Faye(GameController gameController, GameEngine gameEngine) {
-        super(gameController, gameEngine, R.drawable.enemy2);
+        super(gameController, gameEngine, R.drawable.faye);
     }
 
     public void init(GameEngine gameEngine){
