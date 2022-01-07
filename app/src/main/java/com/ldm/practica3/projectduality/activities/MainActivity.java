@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         navigateToFragment( new GameFragment(shipSelection));
     }
 
-    private void navigateToFragment(Fragment dst) {
+    public void navigateToFragment(Fragment dst) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, dst, TAG_FRAGMENT)

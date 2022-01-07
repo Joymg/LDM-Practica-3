@@ -232,7 +232,8 @@ public class Player extends Actor {
                 gameEngine.removeGameObject(this);
 
                 //Todo: show game over screen
-                //gameEngine.stopGame();
+                gameEngine.onPlayerDie();
+
 
             }
 
@@ -258,7 +259,8 @@ public class Player extends Actor {
                         gameEngine.removeGameObject(this);
 
                         //Todo: show game over screen
-                        //gameEngine.stopGame();
+                        gameEngine.onPlayerDie();
+
 
                     }
                 }
