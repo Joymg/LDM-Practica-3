@@ -63,39 +63,32 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 observer.removeOnGlobalLayoutListener(this);
                 GameView gameView = (GameView) getView().findViewById(R.id.gameView);
 
-                TextView points= (TextView) view.findViewById(R.id.points);
+                TextView points = (TextView) view.findViewById(R.id.points);
                 points.setText("Points: 0");
-                TextView lives= (TextView) view.findViewById(R.id.lives);
+                TextView lives = (TextView) view.findViewById(R.id.lives);
 
                 gameEngine = new GameEngine(getActivity(), gameView);
                 gameEngine.setSoundManager(((MainActivity) getActivity()).getSoundManager());
 
                 //Parallax Effect
-                gameEngine.addGameObject(new Background1(gameEngine,bg,20));
-                gameEngine.addGameObject(new Background2(gameEngine,bg,20));
-                gameEngine.addGameObject(new Background3(gameEngine,bg,20));
+                gameEngine.addGameObject(new Background1(gameEngine, bg, 20));
+                gameEngine.addGameObject(new Background2(gameEngine, bg, 20));
+                gameEngine.addGameObject(new Background3(gameEngine, bg, 20));
 
-                gameEngine.addGameObject(new Foreground1(gameEngine,fg,50));
-                gameEngine.addGameObject(new Foreground2(gameEngine,fg,50));
-                gameEngine.addGameObject(new Foreground3(gameEngine,fg,50));
+                gameEngine.addGameObject(new Foreground1(gameEngine, fg, 50));
+                gameEngine.addGameObject(new Foreground2(gameEngine, fg, 50));
+                gameEngine.addGameObject(new Foreground3(gameEngine, fg, 50));
 
-                gameEngine.setUI(points,lives);
+                gameEngine.setUI(points, lives);
                 gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
 
-                gameEngine.addGameObject(new Player(gameEngine,PlayerPreparations()));
+                gameEngine.addGameObject(new Player(gameEngine, PlayerPreparations()));
                 gameEngine.addGameObject(new FPSDisplay(gameEngine));
                 gameEngine.addGameObject(new GameController(gameEngine));
                 gameEngine.startGame();
-
-
-
             }
         });
-
-
-
     }
-
 
 
     @Override
@@ -170,7 +163,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private int[] PlayerPreparations(){
+    private int[] PlayerPreparations() {
         int[] resources = new int[2];
         switch (shipSelection) {
             case ship0:

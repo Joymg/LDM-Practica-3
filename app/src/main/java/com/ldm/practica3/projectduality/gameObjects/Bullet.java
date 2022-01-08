@@ -76,7 +76,7 @@ public class Bullet extends Sprite {
                     removeObject(gameEngine);
                     Enemy e = (Enemy) otherObject;
                     e.GotHit();
-                    gameEngine.onGameEvent(GameEvent.AsteroidHit);
+                    gameEngine.onGameEvent(GameEvent.Explosion);
                     // Add some score
                 }
             }

@@ -58,7 +58,7 @@ public abstract class Enemy extends Actor {
         }
         if (currHealth <= 0) {
             gameEngine.AddPoints(pointsOnKill);
-            gameEngine.onGameEvent(GameEvent.EnemyKilled);
+            gameEngine.onGameEvent(GameEvent.Defeat);
             removeObject(gameEngine);
         }
     }
