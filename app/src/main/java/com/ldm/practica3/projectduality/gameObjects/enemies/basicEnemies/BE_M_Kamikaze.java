@@ -7,10 +7,13 @@ import com.ldm.practica3.projectduality.gameObjects.GameController;
 public class BE_M_Kamikaze extends MeleeEnemy{
     public BE_M_Kamikaze(GameController gameController, GameEngine gameEngine) {
         super(gameController, gameEngine, R.drawable.kamikaze);
+        originalState = R.drawable.kamikaze;
+        variantState = R.drawable.kamikazeinv;
     }
 
     public void init(GameEngine gameEngine){
         super.init(gameEngine);
+
     }
 
     public  void onUpdate(long elapsedMillis, GameEngine gameEngine){

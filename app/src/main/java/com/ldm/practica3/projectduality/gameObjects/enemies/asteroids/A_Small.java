@@ -11,12 +11,19 @@ public class A_Small extends Asteroid{
         super(gameController, gameEngine, R.drawable.rock1);
         currHealth = INIT_HEALTH;
         asteroidType = AsteroidType.Small;
+        originalState = R.drawable.rock1;
+        variantState = R.drawable.rock1inv;
     }
 
     @Override
     public void startGame() {
     }
 
+    @Override
+    public void init(GameEngine gameEngine) {
+
+        super.init(gameEngine);
+    }
 
     public void removeObject(GameEngine gameEngine) {
         // Return to the pool

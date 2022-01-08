@@ -7,6 +7,8 @@ import com.ldm.practica3.projectduality.gameObjects.GameController;
 public class BE_M_Otaku extends MeleeEnemy{
     public BE_M_Otaku(GameController gameController, GameEngine gameEngine) {
         super(gameController, gameEngine, R.drawable.otaku);
+        originalState = R.drawable.otaku;
+        variantState = R.drawable.otakuinv;
     }
 
     public void init(GameEngine gameEngine){

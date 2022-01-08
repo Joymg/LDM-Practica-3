@@ -2,14 +2,19 @@ package com.ldm.practica3.projectduality.gameObjects.enemies.basicEnemies;
 
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.GameEngine;
+import com.ldm.practica3.projectduality.gameObjects.Bullet;
 import com.ldm.practica3.projectduality.gameObjects.GameController;
 
-public class BE_R_Faye extends MeleeEnemy{
+public class BE_R_Faye extends RangedEnemy{
     public BE_R_Faye(GameController gameController, GameEngine gameEngine) {
         super(gameController, gameEngine, R.drawable.faye);
+        initBulletPool(gameEngine, R.drawable.bullet1,R.drawable.bullet1inv);
+        originalState = R.drawable.faye;
+        variantState = R.drawable.fayeinv;
     }
 
     public void init(GameEngine gameEngine){
+
         super.init(gameEngine);
     }
 
@@ -21,4 +26,5 @@ public class BE_R_Faye extends MeleeEnemy{
 
         super.onUpdate(elapsedMillis,gameEngine);
     }
+
 }

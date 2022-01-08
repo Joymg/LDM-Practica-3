@@ -131,7 +131,7 @@ public class GameController extends GameObject {
             enemiesSpawned++;
         }
 
-        long upgradeTimeStamp = lastUpgradetime +  GameEngine.random.nextInt(MAX_TIME_BETWEEN_UPGRADES)
+        long upgradeTimeStamp = lastUpgradetime + GameEngine.random.nextInt(MAX_TIME_BETWEEN_UPGRADES)
                 + MIN_TIME_BETWEEN_UPGRADES;
         if (currentMillis > upgradeTimeStamp) {
             UpgradeCrate upgradeCrate = upgradeCratePool.remove(0);
@@ -146,9 +146,9 @@ public class GameController extends GameObject {
         // This game object does not draw anything
     }
 
-    public void returnToPool( ScreenGameObject otherObject) {
+    public void returnToPool(ScreenGameObject otherObject) {
 
-        if (otherObject instanceof Enemy){
+        if (otherObject instanceof Enemy) {
             Enemy enemy = (Enemy) otherObject;
             switch (enemy.enemyType) {
                 case Asteroid:
@@ -172,8 +172,7 @@ public class GameController extends GameObject {
                 case Boss:
                     break;
             }
-        }
-        else if (otherObject instanceof UpgradeCrate){
+        } else if (otherObject instanceof UpgradeCrate) {
             upgradeCratePool.add((UpgradeCrate) otherObject);
         }
 
@@ -184,21 +183,21 @@ public class GameController extends GameObject {
         switch (asteroidType) {
             case Big:
                 A_Medium a_medium = mediumAsteroidPool.remove(0);
-                a_medium.SpawnAtPosition(asteroidPosX, asteroidPosY);
+                a_medium.SpawnAtPosition(gameEngine, asteroidPosX, asteroidPosY);
                 gameEngine.addGameObject(a_medium);
                 enemiesSpawned++;
                 A_Small a_small = smallAsteroidPool.remove(0);
-                a_small.SpawnAtPosition(asteroidPosX, asteroidPosY);
+                a_small.SpawnAtPosition(gameEngine, asteroidPosX, asteroidPosY);
                 gameEngine.addGameObject(a_small);
                 enemiesSpawned++;
                 break;
             case Medium:
                 A_Small a_smallA = smallAsteroidPool.remove(0);
-                a_smallA.SpawnAtPosition(asteroidPosX, asteroidPosY);
+                a_smallA.SpawnAtPosition(gameEngine, asteroidPosX, asteroidPosY);
                 gameEngine.addGameObject(a_smallA);
                 enemiesSpawned++;
                 A_Small a_smallB = smallAsteroidPool.remove(0);
-                a_smallB.SpawnAtPosition(asteroidPosX, asteroidPosY);
+                a_smallB.SpawnAtPosition(gameEngine, asteroidPosX, asteroidPosY);
                 gameEngine.addGameObject(a_smallB);
                 enemiesSpawned++;
                 break;

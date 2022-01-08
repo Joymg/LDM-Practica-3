@@ -4,15 +4,12 @@ import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.DrawableRes;
-
-import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.R;
+import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
 import com.ldm.practica3.projectduality.engine.Vector2;
 import com.ldm.practica3.projectduality.engine.components.Faction;
 import com.ldm.practica3.projectduality.engine.components.MatterState;
-import com.ldm.practica3.projectduality.engine.components.ShipSelection;
 import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
 import com.ldm.practica3.projectduality.input.InputController;
 import com.ldm.practica3.projectduality.sound.GameEvent;
@@ -23,10 +20,11 @@ import java.util.List;
 
 public class Player extends Actor {
 
+    private static final int INITIAL_LIVES = 3;
     private static final int INITIAL_BULLET_POOL_AMOUNT = 30;
     private static final long TIME_BETWEEN_BULLETS = 150;
-    private static final int INITIAL_LIVES = 3;
     List<Bullet> bullets = new ArrayList<Bullet>();
+    List<Bullet> bulletsInv = new ArrayList<Bullet>();
     private long timeSinceLastFire;
 
     private int maxX;
@@ -61,28 +59,50 @@ public class Player extends Actor {
 
         currHealth = INITIAL_LIVES;
         gameEngine.SetLives(currHealth);
-        initBulletPool(gameEngine);
+        initBulletPool(gameEngine, R.drawable.playerbullet,R.drawable.playerbulletinv);
 
         faction = Faction.Republic;
         state = MatterState.Determined;
         lastState =state;
     }
 
-    private void initBulletPool(GameEngine gameEngine) {
+    private void initBulletPool(GameEngine gameEngine, int bulletDrawableRes,  int bulletDrawableResVariant) {
         for (int i = 0; i < INITIAL_BULLET_POOL_AMOUNT; i++) {
-            bullets.add(new Bullet(gameEngine));
+            bullets.add(new Bullet(gameEngine, bulletDrawableRes));
+            bulletsInv.add(new Bullet(gameEngine, bulletDrawableResVariant));
         }
     }
 
     private Bullet getBullet() {
-        if (bullets.isEmpty()) {
-            return null;
+        switch (state) {
+            case Determined:
+                if (bullets.isEmpty()) {
+                    return null;
+                }
+                return bullets.remove(0);
+
+            case Quantic:
+                if (bulletsInv.isEmpty()) {
+                    return null;
+                }
+                return bulletsInv.remove(0);
+
+            default:
+                return null;
         }
-        return bullets.remove(0);
+
     }
 
-    void releaseBullet(Bullet bullet) {
-        bullets.add(bullet);
+    public void releaseBullet(Bullet bullet) {
+        switch (bullet.state) {
+            case Determined:
+                bullets.add(bullet);
+                break;
+            case Quantic:
+                bulletsInv.add(bullet);
+                break;
+        }
+
     }
 
 
@@ -235,8 +255,38 @@ public class Player extends Actor {
                 gameEngine.removeGameObject(this);
 
                 //Todo: show game over screen
-                //gameEngine.stopGame();
+                gameEngine.onPlayerDie();
 
+
+            }
+
+        }
+
+        if (otherObject instanceof Bullet){
+            //gameEngine.stopGame();
+            Bullet bullet = (Bullet) otherObject;
+            if (bullet.faction != faction){
+                if (bullet.state == state){
+
+                    if (new Date().before(endOfInvincibilityTime))
+                        return;
+
+                    endOfInvincibilityTime = new Date(new Date().getTime() + invincibilityTime);
+                    bullet.removeObject(gameEngine);
+                    gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+
+                    currHealth--;
+                    gameEngine.SetLives(currHealth);
+                    if (currHealth <= 0){
+                        //game over
+                        gameEngine.removeGameObject(this);
+
+                        //Todo: show game over screen
+                        gameEngine.onPlayerDie();
+
+
+                    }
+                }
             }
 
         }

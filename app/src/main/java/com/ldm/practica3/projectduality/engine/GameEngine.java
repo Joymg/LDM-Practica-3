@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.activities.MainActivity;
+import com.ldm.practica3.projectduality.fragments.EndGameFragment;
 import com.ldm.practica3.projectduality.fragments.GameFragment;
 import com.ldm.practica3.projectduality.gameObjects.HeartContainer;
 import com.ldm.practica3.projectduality.gameObjects.Player;
@@ -105,6 +106,16 @@ public class GameEngine {
         if (drawThread != null) {
             drawThread.stopGame();
         }
+    }
+
+    public void onPlayerDie() {
+        if (updateThread != null) {
+            updateThread.stopGame();
+        }
+        if (drawThread != null) {
+            drawThread.stopGame();
+        }
+        ((MainActivity)mainActivity).navigateToFragment(new EndGameFragment(points));
     }
 
     public void pauseGame() {
