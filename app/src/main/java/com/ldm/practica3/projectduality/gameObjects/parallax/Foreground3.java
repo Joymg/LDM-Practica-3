@@ -14,7 +14,7 @@ public class Foreground3 extends BackgroundBase {
     @Override
     public void startGame() {
         positionX = maxX / 2;
-        positionY = maxY/2 -height- maxY;
+        positionY = maxY / 2 - height - maxY;
     }
 
 }

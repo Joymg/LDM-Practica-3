@@ -23,6 +23,9 @@ public abstract class Enemy extends Actor {
     protected int currHealth;
     protected int pointsOnKill = 100;
 
+    protected int originalState;
+    protected int variantState;
+
     public EnemyType enemyType;
 
     protected Enemy(GameController gameController, GameEngine gameEngine, int drawable) {

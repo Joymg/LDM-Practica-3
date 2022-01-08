@@ -11,18 +11,12 @@ public class A_Big extends Asteroid{
         super(gameController, gameEngine, R.drawable.rock3);
         currHealth = INIT_HEALTH;
         asteroidType =AsteroidType.Big;
+        originalState = R.drawable.rock3;
+        variantState = R.drawable.rock3inv;
     }
     public void init(GameEngine gameEngine) {
-        // They initialize in a [-30, 30] degrees angle
-        double angle = gameEngine.random.nextDouble()*Math.PI/3d-Math.PI/6d;
-        speedX = speedFactor * Math.sin(angle);
-        speedY = speedFactor * Math.cos(angle);
-        // Asteroids initialize in the central 50% of the screen horizontally
-        positionX = gameEngine.random.nextInt(gameEngine.width/2)+gameEngine.width/4;
-        // They initialize outside of the screen vertically
-        positionY = -height;
-        rotationSpeed = angle*(180d / Math.PI)/250d; // They rotate 4 times their ange in a second.
-        rotation = gameEngine.random.nextInt(360);
+
+        super.init(gameEngine);
     }
 
     @Override

@@ -1,8 +1,13 @@
 package com.ldm.practica3.projectduality.gameObjects.enemies.asteroids;
 
 
+import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
+import com.ldm.practica3.projectduality.engine.components.MatterState;
 import com.ldm.practica3.projectduality.gameObjects.GameController;
 import com.ldm.practica3.projectduality.gameObjects.enemies.Enemy;
 import com.ldm.practica3.projectduality.gameObjects.enemies.EnemyType;
@@ -31,9 +36,14 @@ public class Asteroid extends Enemy {
         positionY = -height;
         rotationSpeed = angle*(180d / Math.PI)/250d; // They rotate 4 times their ange in a second.
         rotation = gameEngine.random.nextInt(360);
+
+        Resources r = gameEngine.getContext().getResources();
+        Drawable spriteDrawable = state == MatterState.Determined  ?
+                r.getDrawable(originalState):r.getDrawable(variantState);
+        bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
     }
 
-    public void SpawnAtPosition(double posX, double posY){
+    public void SpawnAtPosition(GameEngine gameEngine, double posX, double posY){
         // They initialize in a [-30, 30] degrees angle
         double angle = GameEngine.random.nextDouble()*Math.PI/3d-Math.PI/6d;
         speedX = speedFactor * Math.sin(angle);
@@ -44,6 +54,11 @@ public class Asteroid extends Enemy {
         positionY = posY;
         rotationSpeed = angle*(180d / Math.PI)/250d; // They rotate 4 times their ange in a second.
         rotation = GameEngine.random.nextInt(360);
+
+        Resources r = gameEngine.getContext().getResources();
+        Drawable spriteDrawable = state == MatterState.Determined  ?
+                r.getDrawable(originalState):r.getDrawable(variantState);
+        bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
     }
 
     @Override

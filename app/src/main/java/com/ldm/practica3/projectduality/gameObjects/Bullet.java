@@ -1,5 +1,7 @@
 package com.ldm.practica3.projectduality.gameObjects;
 
+import android.util.Log;
+
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.engine.ScreenGameObject;
@@ -90,6 +92,8 @@ public class Bullet extends Sprite {
         if (otherObject instanceof Actor) {
             if (((Actor) otherObject).faction != faction){
                 if (((Actor) otherObject).state == state){
+                    String className = otherObject.getClass().toString().split("\\.")[ otherObject.getClass().toString().split("\\.").length-1];
+                    Log.d("Collision", "Bullet: " + state.toString() + ", " + className + ": " + ((Actor) otherObject).state + ", " + ((Actor) otherObject).bitmap.toString());
                     // Remove both from the game (and return them to their pools)
                     removeObject(gameEngine);
                     Enemy e = (Enemy) otherObject;

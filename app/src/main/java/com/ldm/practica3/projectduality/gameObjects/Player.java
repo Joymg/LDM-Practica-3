@@ -24,6 +24,7 @@ public class Player extends Actor {
     private static final int INITIAL_BULLET_POOL_AMOUNT = 30;
     private static final long TIME_BETWEEN_BULLETS = 150;
     List<Bullet> bullets = new ArrayList<Bullet>();
+    List<Bullet> bulletsInv = new ArrayList<Bullet>();
     private long timeSinceLastFire;
 
     private int maxX;
@@ -58,28 +59,50 @@ public class Player extends Actor {
 
         currHealth = INITIAL_LIVES;
         gameEngine.SetLives(currHealth);
-        initBulletPool(gameEngine, R.drawable.playerbullet);
+        initBulletPool(gameEngine, R.drawable.playerbullet,R.drawable.playerbulletinv);
 
         faction = Faction.Republic;
         state = MatterState.Determined;
         lastState =state;
     }
 
-    private void initBulletPool(GameEngine gameEngine, int bulletDrawableRes) {
+    private void initBulletPool(GameEngine gameEngine, int bulletDrawableRes,  int bulletDrawableResVariant) {
         for (int i = 0; i < INITIAL_BULLET_POOL_AMOUNT; i++) {
             bullets.add(new Bullet(gameEngine, bulletDrawableRes));
+            bulletsInv.add(new Bullet(gameEngine, bulletDrawableResVariant));
         }
     }
 
     private Bullet getBullet() {
-        if (bullets.isEmpty()) {
-            return null;
+        switch (state) {
+            case Determined:
+                if (bullets.isEmpty()) {
+                    return null;
+                }
+                return bullets.remove(0);
+
+            case Quantic:
+                if (bulletsInv.isEmpty()) {
+                    return null;
+                }
+                return bulletsInv.remove(0);
+
+            default:
+                return null;
         }
-        return bullets.remove(0);
+
     }
 
     public void releaseBullet(Bullet bullet) {
-        bullets.add(bullet);
+        switch (bullet.state) {
+            case Determined:
+                bullets.add(bullet);
+                break;
+            case Quantic:
+                bulletsInv.add(bullet);
+                break;
+        }
+
     }
 
 
@@ -265,7 +288,7 @@ public class Player extends Actor {
                     }
                 }
             }
-            bullet.removeObject(gameEngine);
+
         }
     }
 
