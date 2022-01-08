@@ -6,5 +6,6 @@ public enum GameEvent {
     Explosion,
     Hurt,
     PowerUp,
-    Shot
+    Shot,
+    Switch
 }

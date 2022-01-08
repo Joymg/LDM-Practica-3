@@ -59,8 +59,8 @@ public class GameController extends GameObject {
             }
         }
 
-        FillEnemyPool(20, gameEngine);
-        Log.d("a", "GameController: ");
+        FillEnemyPool(40, gameEngine);
+        //Log.d("a", "GameController: ");
     }
 
     private void FillEnemyPool(int numEnemies, GameEngine gameEngine) {

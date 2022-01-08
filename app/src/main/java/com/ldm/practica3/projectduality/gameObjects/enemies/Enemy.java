@@ -35,7 +35,7 @@ public abstract class Enemy extends Actor {
 
         faction = Faction.Imperium;
 
-        state = GameEngine.random.nextInt(2) == 0 ? MatterState.Determined : MatterState.Quantic;
+        state = GameEngine.random.nextFloat() >= 0.5f ? MatterState.Determined : MatterState.Quantic;
     }
 
 

@@ -124,7 +124,7 @@ public abstract class RangedEnemy extends Enemy {
             bullet.init(this, positionX + width/2 - (width * up.x), positionY + height/2 - (height * up.y), new Vector2(up.x, up.y));
             gameEngine.addGameObject(bullet);
             timeSinceLastFire = 0;
-            gameEngine.onGameEvent(GameEvent.LaserFired);
+            gameEngine.onGameEvent(GameEvent.Shot);
         } else {
             timeSinceLastFire += elapsedMillis;
         }

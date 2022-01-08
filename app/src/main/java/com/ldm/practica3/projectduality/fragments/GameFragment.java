@@ -2,12 +2,16 @@ package com.ldm.practica3.projectduality.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -29,6 +33,7 @@ import com.ldm.practica3.projectduality.gameObjects.parallax.Foreground1;
 import com.ldm.practica3.projectduality.gameObjects.parallax.Foreground2;
 import com.ldm.practica3.projectduality.gameObjects.parallax.Foreground3;
 import com.ldm.practica3.projectduality.input.JoystickInputController;
+import com.ldm.practica3.projectduality.sound.GameEvent;
 
 public class GameFragment extends BaseFragment implements View.OnClickListener {
     private final int bg = R.drawable.bg;
@@ -53,6 +58,13 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.btn_play_pause).setOnClickListener(this);
+
+        ImageView switchButton = view.findViewById(R.id.changeIcon);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.changebutton);
+        BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
+        drawable.setFilterBitmap(false);
+        switchButton.setImageDrawable(drawable);
+
         /*points= (TextView) view.findViewById(R.id.points);
         lives= (TextView) view.findViewById(R.id.lives);*/
         final ViewTreeObserver observer = view.getViewTreeObserver();
@@ -80,11 +92,13 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 gameEngine.addGameObject(new Foreground3(gameEngine, fg, 50));
 
                 gameEngine.setUI(points);
-                gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
 
+                gameEngine.addGameObject(new GameController(gameEngine));
                 gameEngine.addGameObject(new Player(gameEngine, PlayerPreparations()));
                 gameEngine.addGameObject(new FPSDisplay(gameEngine));
-                gameEngine.addGameObject(new GameController(gameEngine));
+
+                gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
+
                 gameEngine.startGame();
             }
         });
@@ -95,6 +109,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.btn_play_pause) {
             pauseGameAndShowPauseDialog();
+            gameEngine.onGameEvent(GameEvent.Click);
         }
     }
 
@@ -103,6 +118,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
         super.onPause();
         if (gameEngine.isRunning()) {
             pauseGameAndShowPauseDialog();
+            gameEngine.onGameEvent(GameEvent.Defeat);
         }
     }
 

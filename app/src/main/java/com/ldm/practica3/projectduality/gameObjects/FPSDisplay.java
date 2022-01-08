@@ -60,14 +60,14 @@ public class FPSDisplay extends GameObject {
 
     @Override
     public void onDraw(Canvas canvas) {
-        paint.setColor(Color.BLACK);
+        /*paint.setColor(Color.BLACK);
         canvas.drawRect(0, (int) (canvas.getHeight() - textHeight), textWidth, canvas.getHeight(), paint);
 
         paint.setColor(Color.WHITE);
         canvas.drawText(framesPerSecondText, textWidth / 2, (int) (canvas.getHeight() - textHeight / 2), paint);
         canvas.drawText(debugText, canvas.getWidth() / 2, canvas.getHeight()/2, paint);
 
-        draws++;
+        draws++;*/
     }
 }
 

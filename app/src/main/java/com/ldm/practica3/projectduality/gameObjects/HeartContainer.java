@@ -11,8 +11,8 @@ public class HeartContainer extends Sprite{
     }
 
     public void init(GameEngine gameEngine, Vector2 pos) {
-        positionX = pos.x;
-        positionY = pos.y;
+        positionX = pos.x - width/2;
+        positionY = pos.y - height/2;
 
     }
 
