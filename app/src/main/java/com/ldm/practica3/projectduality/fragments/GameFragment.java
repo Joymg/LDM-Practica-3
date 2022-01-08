@@ -10,6 +10,8 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import com.ldm.practica3.projectduality.activities.MainActivity;
 import com.ldm.practica3.projectduality.engine.GameEngine;
 import com.ldm.practica3.projectduality.engine.GameView;
@@ -34,7 +36,6 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
 
     private GameEngine gameEngine;
     public TextView points;
-    public TextView lives;
     ShipSelection shipSelection;
 
     public GameFragment(ShipSelection selectedShip) {
@@ -65,7 +66,6 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
 
                 TextView points= (TextView) view.findViewById(R.id.points);
                 points.setText("Points: 0");
-                TextView lives= (TextView) view.findViewById(R.id.lives);
 
                 gameEngine = new GameEngine(getActivity(), gameView);
                 gameEngine.setSoundManager(((MainActivity) getActivity()).getSoundManager());
@@ -79,7 +79,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 gameEngine.addGameObject(new Foreground2(gameEngine,fg,50));
                 gameEngine.addGameObject(new Foreground3(gameEngine,fg,50));
 
-                gameEngine.setUI(points,lives);
+                gameEngine.setUI(points);
                 gameEngine.setInputController(new JoystickInputController(getView(), gameEngine));
 
                 gameEngine.addGameObject(new Player(gameEngine,PlayerPreparations()));
@@ -130,7 +130,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
 
     private void pauseGameAndShowPauseDialog() {
         gameEngine.pauseGame();
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(getActivity(),R.style.MyAlertDialogTheme)
                 .setTitle(R.string.pause_dialog_title)
                 .setMessage(R.string.pause_dialog_message)
                 .setPositiveButton(R.string.resume, new DialogInterface.OnClickListener() {
@@ -154,8 +154,10 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                         gameEngine.resumeGame();
                     }
                 })
-                .create()
-                .show();
+                .create().show();
+
+
+
 
     }
 

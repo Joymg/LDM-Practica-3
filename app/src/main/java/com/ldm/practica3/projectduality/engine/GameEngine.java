@@ -50,7 +50,6 @@ public class GameEngine {
     private int playerLives =4;
 
     public TextView pointsTextView;
-    public TextView livesTextView;
 
     private List<HeartContainer> heartUI = new ArrayList<HeartContainer>();
 
@@ -216,9 +215,8 @@ public class GameEngine {
         this.inputController = inputController;
     }
 
-    public void setUI(TextView p, TextView l){
+    public void setUI(TextView p){
         pointsTextView = p;
-        livesTextView = l;
 
         for (int i = 0; i < playerLives; i++) {
             HeartContainer h = new HeartContainer(this);
@@ -245,7 +243,6 @@ public class GameEngine {
         playerLives = value;
 //        if (value > 0)
             removeGameObject(heartUI.remove(heartUI.size()-1));
-        livesTextView.setText("Lives: " +Integer.toString(playerLives));
     }
 
     public int GetLives(){

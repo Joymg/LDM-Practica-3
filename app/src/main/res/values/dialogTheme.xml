@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        &lt;!&ndash; This will override the Alert Dialog theme &ndash;&gt;
+        <item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
+    </style>-->
+
+    <style name="MyAlertDialogTheme" parent="@android:style/Theme.Material.Light.Dialog.Alert">
+        <item name="android:textAppearanceSmall">@style/MyTextAppearanceSmall</item>
+        <item name="android:textAppearanceMedium">@style/MyTextAppearanceMedium</item>
+        <item name="android:textAppearanceLarge">@style/MyTextAppearanceBig</item>
+        <item name="android:windowTitleStyle">@style/MyTextAppearanceTitle</item>
+        <item name="android:buttonBarButtonStyle">@style/MyTextAppearanceButton</item>
+    </style>
+
+
+    <style name="MyTextAppearanceSmall" parent="TextAppearance.AppCompat.Small">
+        <item name="android:fontFamily">@font/upheavtt</item>
+
+    </style>
+    <style name="MyTextAppearanceMedium" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:fontFamily">@font/upheavtt</item>
+
+    </style>
+    <style name="MyTextAppearanceBig" parent="TextAppearance.AppCompat.Large">
+        <item name="android:fontFamily">@font/upheavtt</item>
+
+    </style>
+    <style name="MyTextAppearanceTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:fontFamily">@font/upheavtt</item>
+
+    </style>
+    <style name="MyTextAppearanceButton" parent="Widget.AppCompat.Button">
+        <item name="android:fontFamily">@font/upheavtt</item>
+
+    </style>
+
+</resources>

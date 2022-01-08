@@ -14,7 +14,7 @@ public class UpgradeCrate extends Sprite {
     private int currHealth;
 
     protected UpgradeCrate(GameController gameController, GameEngine gameEngine) {
-        super(gameEngine, R.drawable.heart);
+        super(gameEngine, R.drawable.poweruphealth);
         this.gameController = gameController;
         this.speedFactor = 30d * pixelFactor / 1000d;
         currHealth = INITIAL_HEALTH;
