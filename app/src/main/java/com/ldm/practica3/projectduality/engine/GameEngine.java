@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ldm.practica3.projectduality.R;
 import com.ldm.practica3.projectduality.activities.MainActivity;
+import com.ldm.practica3.projectduality.fragments.EndGameFragment;
 import com.ldm.practica3.projectduality.fragments.GameFragment;
 import com.ldm.practica3.projectduality.gameObjects.HeartContainer;
 import com.ldm.practica3.projectduality.gameObjects.Player;
@@ -49,7 +50,6 @@ public class GameEngine {
     private int playerLives =4;
 
     public TextView pointsTextView;
-    public TextView livesTextView;
 
     private List<HeartContainer> heartUI = new ArrayList<HeartContainer>();
 
@@ -105,6 +105,16 @@ public class GameEngine {
         if (drawThread != null) {
             drawThread.stopGame();
         }
+    }
+
+    public void onPlayerDie() {
+        if (updateThread != null) {
+            updateThread.stopGame();
+        }
+        if (drawThread != null) {
+            drawThread.stopGame();
+        }
+        ((MainActivity)mainActivity).navigateToFragment(new EndGameFragment(points));
     }
 
     public void pauseGame() {
@@ -205,9 +215,8 @@ public class GameEngine {
         this.inputController = inputController;
     }
 
-    public void setUI(TextView p, TextView l){
+    public void setUI(TextView p){
         pointsTextView = p;
-        livesTextView = l;
 
         for (int i = 0; i < playerLives; i++) {
             HeartContainer h = new HeartContainer(this);
@@ -234,7 +243,6 @@ public class GameEngine {
         playerLives = value;
 //        if (value > 0)
             removeGameObject(heartUI.remove(heartUI.size()-1));
-        livesTextView.setText("Lives: " +Integer.toString(playerLives));
     }
 
     public int GetLives(){

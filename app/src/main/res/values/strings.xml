@@ -14,10 +14,19 @@
 
     <string name="hello_world">Hello</string>
     <string name="pause">Game paused</string>
+
     <string name="start">Start game</string>
-    <string name="game_title">game title</string>
-    <string name="pause_dialog_title">pause title</string>
-    <string name="pause_dialog_message">pause message</string>
+    <string name="left">❮</string>
+    <string name="right">❯</string>
+
+    <string name="mainMenu">Go to Main Menu</string>
+    <string name="restart">Try Again</string>
+    <string name="puntuation">You made:</string>
+    <string name="finalScore">0000</string>
+
+    <string name="game_title">Space cowboy</string>
+    <string name="pause_dialog_title">The game is paused</string>
+    <string name="pause_dialog_message">Do you want to continue?</string>
     <string name="resume">resume</string>
-    <string name="stop">stop</string>
+    <string name="stop">Exit</string>
 </resources>

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scaffold);
+        setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new MainMenuFragment(), TAG_FRAGMENT)
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         soundManager = new SoundManager(getApplicationContext());
 
         points= (TextView) findViewById(R.id.points);
-        lives= (TextView) findViewById(R.id.lives);
     }
 
     public SoundManager getSoundManager() {
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         navigateToFragment( new GameFragment(shipSelection));
     }
 
-    private void navigateToFragment(Fragment dst) {
+    public void navigateToFragment(Fragment dst) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, dst, TAG_FRAGMENT)
