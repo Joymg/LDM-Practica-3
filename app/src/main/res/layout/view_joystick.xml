@@ -25,15 +25,18 @@
             app:layout_constraintVertical_bias="0.902" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/changeIcon"
             android:layout_width="46dp"
             android:layout_height="55dp"
+            android:clickable="false"
+            android:contentDescription="@string/changestate"
             app:layout_constraintBottom_toBottomOf="@+id/joystick_touch2"
             app:layout_constraintEnd_toEndOf="@+id/joystick_touch2"
             app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="@+id/joystick_touch2"
             app:layout_constraintTop_toTopOf="@+id/joystick_touch2"
-            app:srcCompat="@drawable/changebutton" />
+            app:srcCompat="@drawable/changebutton"
+            tools:ignore="ImageContrastCheck" />
 
         <View
             android:id="@+id/joystick_main"

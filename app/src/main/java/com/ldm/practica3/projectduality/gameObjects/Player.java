@@ -22,7 +22,7 @@ public class Player extends Actor {
 
     private static final int INITIAL_LIVES = 3;
     private static final int INITIAL_BULLET_POOL_AMOUNT = 30;
-    private static final long TIME_BETWEEN_BULLETS = 150;
+    private static final long TIME_BETWEEN_BULLETS = 120;
     List<Bullet> bullets = new ArrayList<Bullet>();
     List<Bullet> bulletsInv = new ArrayList<Bullet>();
     private long timeSinceLastFire;
@@ -31,7 +31,7 @@ public class Player extends Actor {
     private int maxY;
     private double speedFactor;
 
-    private float mobilityFactor = 1000;
+    private float mobilityFactor = 500;
     private float maxSpeed = 500;
     private Vector2 up = new Vector2(0, 1);
     private Vector2 right = new Vector2(1, 0);
@@ -40,7 +40,8 @@ public class Player extends Actor {
     public int currHealth;
     public int invincibilityTime = 1000;
     Date endOfInvincibilityTime;
-    public int bulletPerShot = 1 ;
+    public int bulletPerShot = 1;
+    public float dispersionAngle = 1;
 
     MatterState lastState;
 
@@ -48,7 +49,7 @@ public class Player extends Actor {
     int variantState;
 
 
-    public Player(GameEngine gameEngine, int[] resources ) {
+    public Player(GameEngine gameEngine, int[] resources) {
         super(gameEngine, resources[0]);
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
@@ -59,14 +60,14 @@ public class Player extends Actor {
 
         currHealth = INITIAL_LIVES;
         gameEngine.SetLives(currHealth);
-        initBulletPool(gameEngine, R.drawable.playerbullet,R.drawable.playerbulletinv);
+        initBulletPool(gameEngine, R.drawable.playerbullet, R.drawable.playerbulletinv);
 
         faction = Faction.Republic;
         state = MatterState.Determined;
-        lastState =state;
+        lastState = state;
     }
 
-    private void initBulletPool(GameEngine gameEngine, int bulletDrawableRes,  int bulletDrawableResVariant) {
+    private void initBulletPool(GameEngine gameEngine, int bulletDrawableRes, int bulletDrawableResVariant) {
         for (int i = 0; i < INITIAL_BULLET_POOL_AMOUNT; i++) {
             bullets.add(new Bullet(gameEngine, bulletDrawableRes));
             bulletsInv.add(new Bullet(gameEngine, bulletDrawableResVariant));
@@ -123,14 +124,14 @@ public class Player extends Actor {
 
     }
 
-    private void checkStateChange( GameEngine gameEngine) {
-        state = gameEngine.inputController.state ? MatterState.Quantic: MatterState.Determined;
+    private void checkStateChange(GameEngine gameEngine) {
+        state = gameEngine.inputController.state ? MatterState.Quantic : MatterState.Determined;
 
-        if (state != lastState){
+        if (state != lastState) {
             lastState = state;
             Resources r = gameEngine.getContext().getResources();
             Drawable spriteDrawable = gameEngine.inputController.state ?
-                    r.getDrawable(variantState):r.getDrawable(originalState);
+                    r.getDrawable(variantState) : r.getDrawable(originalState);
             bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
         }
     }
@@ -166,20 +167,9 @@ public class Player extends Actor {
 
         up = Vector2.vecFromAngle((float) rotation);
 
+        positionX += up.x * maxSpeed * elapsedMillis / 1000;
+        positionY += up.y * maxSpeed * elapsedMillis / 1000;
 
-        //Vector2 acc = up.multiply(input.GetMagnitude());
-        Vector2 acc = up;
-        acc.x -= (velocity.x * velocity.x) / 4000000;
-        acc.y -= (velocity.y * velocity.y) / 4000000;
-
-
-        velocity.x += acc.x * elapsedMillis * 0.05f;
-        velocity.y += acc.y * elapsedMillis * 0.05f;
-
-        positionX += velocity.x * elapsedMillis;
-        positionY += velocity.y * elapsedMillis;
-
-        //positionX += speedFactor * inputController.horizontalFactor * elapsedMillis;
         if (positionX < 0) {
             positionX = 0;
             velocity.x = -.5f * velocity.x;
@@ -197,12 +187,6 @@ public class Player extends Actor {
             velocity.y = -.5f * velocity.y;
             rotation += 90;
         }
-
-        if (velocity.GetMagnitude() > speedFactor) {
-            velocity.normalize();
-            velocity.x *= speedFactor;
-            velocity.y *= speedFactor;
-        }
     }
 
     private void Rotate(double amount) {
@@ -217,17 +201,32 @@ public class Player extends Actor {
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
         if (timeSinceLastFire > TIME_BETWEEN_BULLETS) {//gameEngine.inputController.isFiring &&
+
+            Vector2 direction;
+            float smallAngle = dispersionAngle / bulletPerShot;
+            float halfAngle = dispersionAngle / 2;
+
             for (int i = 0; i < bulletPerShot; i++) {
                 Bullet bullet = getBullet();
                 if (bullet == null) {
                     return;
                 }
-                //TODO: make diferent shoots
-                bullet.init(this, positionX + width/2 - (width * up.x), positionY + height/2 - (height * up.y), new Vector2(up.x, up.y));
+
+                if (bulletPerShot > 1) {
+                    float angle = (i * smallAngle) - halfAngle;
+
+                    direction = new Vector2();
+                    direction.x = (float) (up.x * Math.cos(angle) - up.y * Math.sin(angle));
+                    direction.y = (float) (up.x * Math.sin(angle) + up.y * Math.cos(angle));
+                } else {
+                    direction = up;
+                }
+
+                bullet.init(this, positionX + width / 2 - (width / 2 * up.x), positionY + height / 2 - (height / 2 * up.y), new Vector2(direction.x, direction.y));
                 gameEngine.addGameObject(bullet);
             }
             timeSinceLastFire = 0;
-            gameEngine.onGameEvent(GameEvent.LaserFired);
+            gameEngine.onGameEvent(GameEvent.Shot);
         } else {
             timeSinceLastFire += elapsedMillis;
         }
@@ -240,17 +239,19 @@ public class Player extends Actor {
             if (new Date().before(endOfInvincibilityTime))
                 return;
 
+            Enemy enemy = (Enemy) otherObject;
+
+            if (enemy.state != state)
+                return;
+
             endOfInvincibilityTime = new Date(new Date().getTime() + invincibilityTime);
 
-            //gameEngine.removeGameObject(this);
-            //gameEngine.stopGame();
-            Enemy enemy = (Enemy) otherObject;
             enemy.removeObject(gameEngine);
-            gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+            gameEngine.onGameEvent(GameEvent.Hurt);
 
             currHealth--;
             gameEngine.SetLives(currHealth);
-            if (currHealth <= 0){
+            if (currHealth <= 0) {
                 //game over
                 gameEngine.removeGameObject(this);
 
@@ -262,35 +263,34 @@ public class Player extends Actor {
 
         }
 
-        if (otherObject instanceof Bullet){
+        if (otherObject instanceof Bullet) {
             //gameEngine.stopGame();
             Bullet bullet = (Bullet) otherObject;
-            if (bullet.faction != faction){
-                if (bullet.state == state){
+            if (bullet.faction != faction && bullet.state == state) {
 
-                    if (new Date().before(endOfInvincibilityTime))
-                        return;
+                if (new Date().before(endOfInvincibilityTime))
+                    return;
 
-                    endOfInvincibilityTime = new Date(new Date().getTime() + invincibilityTime);
-                    bullet.removeObject(gameEngine);
-                    gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+                endOfInvincibilityTime = new Date(new Date().getTime() + invincibilityTime);
+                bullet.removeObject(gameEngine);
+                gameEngine.onGameEvent(GameEvent.Hurt);
 
-                    currHealth--;
-                    gameEngine.SetLives(currHealth);
-                    if (currHealth <= 0){
-                        //game over
-                        gameEngine.removeGameObject(this);
+                currHealth--;
+                gameEngine.SetLives(currHealth);
+                if (currHealth <= 0) {
+                    //game over
+                    gameEngine.removeGameObject(this);
 
-                        //Todo: show game over screen
-                        gameEngine.onPlayerDie();
+                    //Todo: show game over screen
+                    gameEngine.onPlayerDie();
 
 
-                    }
                 }
             }
-
         }
+
     }
-
-
 }
+
+
+

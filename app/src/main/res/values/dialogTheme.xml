@@ -10,6 +10,10 @@
     </style>-->
 
     <style name="MyAlertDialogTheme" parent="@android:style/Theme.Material.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/pink</item>
+
         <item name="android:textAppearanceSmall">@style/MyTextAppearanceSmall</item>
         <item name="android:textAppearanceMedium">@style/MyTextAppearanceMedium</item>
         <item name="android:textAppearanceLarge">@style/MyTextAppearanceBig</item>
@@ -19,23 +23,23 @@
 
 
     <style name="MyTextAppearanceSmall" parent="TextAppearance.AppCompat.Small">
-        <item name="android:fontFamily">@font/upheavtt</item>
+        <item name="android:fontFamily">@font/betterpixelsacce</item>
 
     </style>
     <style name="MyTextAppearanceMedium" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:fontFamily">@font/upheavtt</item>
+        <item name="android:fontFamily">@font/betterpixelsacce</item>
 
     </style>
     <style name="MyTextAppearanceBig" parent="TextAppearance.AppCompat.Large">
-        <item name="android:fontFamily">@font/upheavtt</item>
+        <item name="android:fontFamily">@font/betterpixelsacce</item>
 
     </style>
     <style name="MyTextAppearanceTitle" parent="TextAppearance.AppCompat.Title">
-        <item name="android:fontFamily">@font/upheavtt</item>
+        <item name="android:fontFamily">@font/betterpixelsacce</item>
 
     </style>
     <style name="MyTextAppearanceButton" parent="Widget.AppCompat.Button">
-        <item name="android:fontFamily">@font/upheavtt</item>
+        <item name="android:fontFamily">@font/betterpixelsacce</item>
 
     </style>
 

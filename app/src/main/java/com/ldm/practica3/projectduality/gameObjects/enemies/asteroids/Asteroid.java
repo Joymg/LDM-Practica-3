@@ -18,46 +18,46 @@ public class Asteroid extends Enemy {
 
     public AsteroidType asteroidType;
 
-    public Asteroid(GameController gameController, GameEngine gameEngine,int drawable) {
+    public Asteroid(GameController gameController, GameEngine gameEngine, int drawable) {
         super(gameController, gameEngine, drawable);
-        this.speedFactor = 50d * pixelFactor/1000d;
+        this.speedFactor = 50d * pixelFactor / 1000d;
         this.gameController = gameController;
         enemyType = EnemyType.Asteroid;
     }
 
     public void init(GameEngine gameEngine) {
         // They initialize in a [-30, 30] degrees angle
-        double angle = gameEngine.random.nextDouble()*Math.PI/3d-Math.PI/6d;
+        double angle = gameEngine.random.nextDouble() * Math.PI / 3d - Math.PI / 6d;
         speedX = speedFactor * Math.sin(angle);
         speedY = speedFactor * Math.cos(angle);
         // Asteroids initialize in the central 50% of the screen horizontally
-        positionX = gameEngine.random.nextInt(gameEngine.width/2)+gameEngine.width/4;
+        positionX = gameEngine.random.nextInt(gameEngine.width / 2) + gameEngine.width / 4;
         // They initialize outside of the screen vertically
         positionY = -height;
-        rotationSpeed = angle*(180d / Math.PI)/250d; // They rotate 4 times their ange in a second.
+        rotationSpeed = angle * (180d / Math.PI) / 250d; // They rotate 4 times their ange in a second.
         rotation = gameEngine.random.nextInt(360);
 
         Resources r = gameEngine.getContext().getResources();
-        Drawable spriteDrawable = state == MatterState.Determined  ?
-                r.getDrawable(originalState):r.getDrawable(variantState);
+        Drawable spriteDrawable = state == MatterState.Determined ?
+                r.getDrawable(originalState) : r.getDrawable(variantState);
         bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
     }
 
-    public void SpawnAtPosition(GameEngine gameEngine, double posX, double posY){
+    public void SpawnAtPosition(GameEngine gameEngine, double posX, double posY) {
         // They initialize in a [-30, 30] degrees angle
-        double angle = GameEngine.random.nextDouble()*Math.PI/3d-Math.PI/6d;
+        double angle = GameEngine.random.nextDouble() * Math.PI / 3d - Math.PI / 6d;
         speedX = speedFactor * Math.sin(angle);
         speedY = speedFactor * Math.cos(angle);
         // Asteroids initialize in the central 50% of the screen horizontally
         positionX = posX;
         // They initialize outside of the screen vertically
         positionY = posY;
-        rotationSpeed = angle*(180d / Math.PI)/250d; // They rotate 4 times their ange in a second.
+        rotationSpeed = angle * (180d / Math.PI) / 250d; // They rotate 4 times their ange in a second.
         rotation = GameEngine.random.nextInt(360);
 
         Resources r = gameEngine.getContext().getResources();
-        Drawable spriteDrawable = state == MatterState.Determined  ?
-                r.getDrawable(originalState):r.getDrawable(variantState);
+        Drawable spriteDrawable = state == MatterState.Determined ?
+                r.getDrawable(originalState) : r.getDrawable(variantState);
         bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
     }
 
@@ -81,12 +81,11 @@ public class Asteroid extends Enemy {
         rotation += rotationSpeed * elapsedMillis;
         if (rotation > 360) {
             rotation = 0;
-        }
-        else if (rotation < 0) {
+        } else if (rotation < 0) {
             rotation = 360;
         }
 
-        super.onUpdate(elapsedMillis,gameEngine);
+        super.onUpdate(elapsedMillis, gameEngine);
 
 
     }

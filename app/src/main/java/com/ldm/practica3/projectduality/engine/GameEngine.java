@@ -47,7 +47,7 @@ public class GameEngine {
     private Activity mainActivity;
 
     private int points;
-    private int playerLives =4;
+    private int playerLives = 4;
 
     public TextView pointsTextView;
 
@@ -70,11 +70,10 @@ public class GameEngine {
 
         this.pixelFactor = this.height / 278d;
 
-        points =0;
+        points = 0;
 
 
     }
-
 
 
     public void startGame() {
@@ -114,7 +113,9 @@ public class GameEngine {
         if (drawThread != null) {
             drawThread.stopGame();
         }
-        ((MainActivity)mainActivity).navigateToFragment(new EndGameFragment(points));
+        soundManager.playSoundForGameEvent(GameEvent.Defeat);
+
+        ((MainActivity) mainActivity).navigateToFragment(new EndGameFragment(points));
     }
 
     public void pauseGame() {
@@ -152,9 +153,9 @@ public class GameEngine {
     public void onUpdate(long elapsedMillis) {
         int nugameObjects = gameObjects.size();
         for (int i = 0; i < nugameObjects; i++) {
-            GameObject go =  gameObjects.get(i);
+            GameObject go = gameObjects.get(i);
             go.onUpdate(elapsedMillis, this);
-            if(go instanceof ScreenGameObject) {
+            if (go instanceof ScreenGameObject) {
                 ((ScreenGameObject) go).onPostUpdate(this);
             }
         }
@@ -163,7 +164,7 @@ public class GameEngine {
             while (!objectsToRemove.isEmpty()) {
                 GameObject objectToRemove = objectsToRemove.remove(0);
                 gameObjects.remove(objectToRemove);
-                if (objectToRemove instanceof  ScreenGameObject) {
+                if (objectToRemove instanceof ScreenGameObject) {
                     quadTree.removeGameObject((ScreenGameObject) objectToRemove);
                 }
             }
@@ -198,7 +199,7 @@ public class GameEngine {
         quadTree.checkCollisions(this, detectedCollisions);
     }
 
-    private void addGameObjectNow (GameObject object) {
+    private void addGameObjectNow(GameObject object) {
         gameObjects.add(object);
         if (object instanceof ScreenGameObject) {
             ScreenGameObject sgo = (ScreenGameObject) object;
@@ -215,37 +216,39 @@ public class GameEngine {
         this.inputController = inputController;
     }
 
-    public void setUI(TextView p){
+    public void setUI(TextView p) {
         pointsTextView = p;
 
         for (int i = 0; i < playerLives; i++) {
             HeartContainer h = new HeartContainer(this);
             heartUI.add(h);
-            h.init(this,new Vector2(20,(i)*50 +20));
+            h.init(this, new Vector2((width / 2) - 100 + (100 * i), 100));
             gameObjects.add(h);
         }
     }
 
-    public void onGameEvent (GameEvent gameEvent) {
+    public void onGameEvent(GameEvent gameEvent) {
         // We notify all the GameObjects
         // Also the sound manager
         soundManager.playSoundForGameEvent(gameEvent);
     }
 
-    public void AddPoints(int value){
+    public void AddPoints(int value) {
         points += value;
-        pointsTextView.setText("Points: " + Integer.toString(points));
-    }
-    public int GetPoints(){
-        return points;
-    }
-    public void SetLives(int value){
-        playerLives = value;
-//        if (value > 0)
-            removeGameObject(heartUI.remove(heartUI.size()-1));
+        pointsTextView.setText(Integer.toString(points));
     }
 
-    public int GetLives(){
+    public int GetPoints() {
+        return points;
+    }
+
+    public void SetLives(int value) {
+        playerLives = value;
+//        if (value > 0)
+        removeGameObject(heartUI.remove(heartUI.size() - 1));
+    }
+
+    public int GetLives() {
         return playerLives;
     }
 }

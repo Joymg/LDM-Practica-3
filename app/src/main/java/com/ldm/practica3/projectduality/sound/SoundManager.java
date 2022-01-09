@@ -8,13 +8,15 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 
+import com.ldm.practica3.projectduality.R;
+
 import java.io.IOException;
 import java.util.HashMap;
 
 public final class SoundManager {
 
     private static final int MAX_STREAMS = 10;
-    private static final float DEFAULT_MUSIC_VOLUME = 0.6f;
+    private static final float DEFAULT_MUSIC_VOLUME = 0.3f;
 
     private HashMap<GameEvent, Integer> soundsMap;
 
@@ -49,16 +51,19 @@ public final class SoundManager {
     private void loadSounds() {
         createSoundPool();
         soundsMap = new HashMap<GameEvent, Integer>();
-        loadEventSound(context, GameEvent.AsteroidHit, "Asteroid_explosion_1.wav");
-        loadEventSound(context, GameEvent.SpaceshipHit, "Spaceship_explosion.wav");
-        loadEventSound(context, GameEvent.LaserFired, "Laser_shoot.wav");
+        loadEventSound(context, GameEvent.Click, "click.mp3");
+        loadEventSound(context, GameEvent.Defeat, "defeat.mp3");
+        loadEventSound(context, GameEvent.Explosion, "");
+        loadEventSound(context, GameEvent.Hurt, "hurt.mp3");
+        loadEventSound(context, GameEvent.PowerUp, "powerup.mp3");
+        loadEventSound(context, GameEvent.Shot,"shot.mp3");
     }
 
     private void loadMusic() {
         try {
             // Important to not reuse it. It can be on a strange state
             bgPlayer = new MediaPlayer();
-            AssetFileDescriptor afd = context.getAssets().openFd("sfx/Riccardo_Colombo_-_11_-_Something_mental.mp3");
+            AssetFileDescriptor afd = context.getAssets().openFd("sfx/spacesong.mp3");
             bgPlayer.setDataSource(afd.getFileDescriptor(),
                     afd.getStartOffset(), afd.getLength());
             bgPlayer.setLooping(true);
@@ -97,5 +102,7 @@ public final class SoundManager {
         bgPlayer.stop();
         bgPlayer.release();
     }
+
+
 }
 

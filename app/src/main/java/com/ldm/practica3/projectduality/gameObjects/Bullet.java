@@ -26,7 +26,7 @@ public class Bullet extends Sprite {
     public Bullet(GameEngine gameEngine, int bulletDrawableRes){
         super(gameEngine, bulletDrawableRes);
 
-        speedFactor = gameEngine.pixelFactor * -200d / 1000d;
+        speedFactor = gameEngine.pixelFactor * -150d / 1000d;
 
         faction = Faction.Republic;
         state = MatterState.Determined;
@@ -98,7 +98,7 @@ public class Bullet extends Sprite {
                     removeObject(gameEngine);
                     Enemy e = (Enemy) otherObject;
                     e.GotHit();
-                    gameEngine.onGameEvent(GameEvent.AsteroidHit);
+                    gameEngine.onGameEvent(GameEvent.Explosion);
                     // Add some score
                 }
             }

@@ -1,5 +1,8 @@
 package com.ldm.practica3.projectduality.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +37,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
         //reseting after going back
         shipSelection = ShipSelection.ship0;
         shipSelectionCounter = 0;
+
         return rootView;
     }
 
@@ -42,28 +46,17 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
         super.onViewCreated(view, savedInstanceState);
 
         shipImage = view.findViewById(R.id.playerImage);
+        UpdateShipSprite();
 
         previusShip = view.findViewById(R.id.btn_nave_izda);
         previusShip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shipSelectionCounter --;
-                if (shipSelectionCounter<0){
-                    shipSelectionCounter = ShipSelection.values().length-1;
+                shipSelectionCounter--;
+                if (shipSelectionCounter < 0) {
+                    shipSelectionCounter = ShipSelection.values().length - 1;
                 }
-                shipSelection = ShipSelection.values()[shipSelectionCounter];
-                switch (shipSelection) {
-                    case ship0:
-                        shipImage.setImageResource(R.drawable.player1);
-                        break;
-                    case ship1:
-                        shipImage.setImageResource(R.drawable.player2);
-                        break;
-                    case ship2:
-                        shipImage.setImageResource(R.drawable.player3);
-                        break;
-                }
-
+                UpdateShipSprite();
             }
         });
 
@@ -72,29 +65,41 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onClick(View v) {
 
-                shipSelectionCounter ++;
-                if (shipSelectionCounter>2){
+                shipSelectionCounter++;
+                if (shipSelectionCounter > 2) {
                     shipSelectionCounter = 0;
                 }
-                shipSelection = ShipSelection.values()[shipSelectionCounter];
-                switch (shipSelection) {
-                    case ship0:
-                        shipImage.setImageResource(R.drawable.player1);
-                        break;
-                    case ship1:
-                        shipImage.setImageResource(R.drawable.player2);
-                        break;
-                    case ship2:
-                        shipImage.setImageResource(R.drawable.player3);
-                        break;
-                }
+                UpdateShipSprite();
             }
         });
         view.findViewById(R.id.btn_start).setOnClickListener(this);
     }
 
+    void UpdateShipSprite(){
+        shipSelection = ShipSelection.values()[shipSelectionCounter];
+        Bitmap bitmap;
+        switch (shipSelection) {
+            case ship0:
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player1);
+                break;
+            case ship1:
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player2);
+                break;
+            case ship2:
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player3);
+                break;
+            default:
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player1);
+        }
+
+
+        BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
+        drawable.setFilterBitmap(false);
+        shipImage.setImageDrawable(drawable);
+    }
+
     @Override
     public void onClick(View v) {
-        ((MainActivity)getActivity()).startGame(shipSelection);
+        ((MainActivity) getActivity()).startGame(shipSelection);
     }
 }
