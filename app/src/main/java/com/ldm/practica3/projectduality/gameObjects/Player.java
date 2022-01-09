@@ -167,8 +167,8 @@ public class Player extends Actor {
 
         up = Vector2.vecFromAngle((float) rotation);
 
-        positionX += up.x * maxSpeed * elapsedMillis/1000;
-        positionY += up.y * maxSpeed * elapsedMillis/1000;
+        positionX += up.x * maxSpeed * elapsedMillis / 1000;
+        positionY += up.y * maxSpeed * elapsedMillis / 1000;
 
         if (positionX < 0) {
             positionX = 0;
@@ -202,14 +202,9 @@ public class Player extends Actor {
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
         if (timeSinceLastFire > TIME_BETWEEN_BULLETS) {//gameEngine.inputController.isFiring &&
 
+            Vector2 direction;
             float smallAngle = dispersionAngle / bulletPerShot;
             float halfAngle = dispersionAngle / 2;
-
-            Vector2 direction = up;
-            Vector2 newDirection = new Vector2();
-            newDirection.x = (float) (direction.x * Math.cos(-halfAngle) - direction.y * Math.sin(-halfAngle));
-            newDirection.y = (float) (direction.x * Math.sin(-halfAngle) + direction.y * Math.cos(-halfAngle));
-            direction = newDirection;
 
             for (int i = 0; i < bulletPerShot; i++) {
                 Bullet bullet = getBullet();
@@ -217,13 +212,17 @@ public class Player extends Actor {
                     return;
                 }
 
-                float angle = 0;
+                if (bulletPerShot > 1) {
+                    float angle = (i * smallAngle) - halfAngle;
 
-                newDirection.x = (float) (direction.x * Math.cos(smallAngle) - direction.y * Math.sin(smallAngle));
-                newDirection.y = (float) (direction.x * Math.sin(smallAngle) + direction.y * Math.cos(smallAngle));
-                direction = new Vector2(newDirection.x, newDirection.y);
+                    direction = new Vector2();
+                    direction.x = (float) (up.x * Math.cos(angle) - up.y * Math.sin(angle));
+                    direction.y = (float) (up.x * Math.sin(angle) + up.y * Math.cos(angle));
+                } else {
+                    direction = up;
+                }
 
-                bullet.init(this, positionX + width / 2 - (width/2 * up.x), positionY + height / 2 - (height/2 * up.y), new Vector2(direction.x, direction.y));
+                bullet.init(this, positionX + width / 2 - (width / 2 * up.x), positionY + height / 2 - (height / 2 * up.y), new Vector2(direction.x, direction.y));
                 gameEngine.addGameObject(bullet);
             }
             timeSinceLastFire = 0;
