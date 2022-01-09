@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context="com.ldm.practica3.projectduality.fragments.GameFragment">
+    tools:context="com.ldm.practica3.spacecowboy.fragments.GameFragment">
 
-    <com.ldm.practica3.projectduality.engine.StandardGameView
+    <com.ldm.practica3.spacecowboy.engine.StandardGameView
         android:id="@+id/gameView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -24,11 +24,13 @@
             android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="332dp"
+            android:layout_marginEnd="16dp"
             android:backgroundTint="#00F41010"
             android:scaleType="fitCenter"
             android:src="@drawable/pause"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/points"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="SpeakableTextPresentCheck" />
 
@@ -36,14 +38,14 @@
             android:id="@+id/points"
             android:layout_width="217dp"
             android:layout_height="47dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="@font/betterpixelsacce"
             android:text="TextView"
-            android:textAlignment="textEnd"
+            android:textAlignment="viewStart"
             android:textColor="#FFFFFF"
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.917"
+            app:layout_constraintHorizontal_bias="0.082"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
