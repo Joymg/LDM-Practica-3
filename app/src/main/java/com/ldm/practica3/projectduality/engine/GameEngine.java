@@ -235,7 +235,7 @@ public class GameEngine {
 
     public void AddPoints(int value) {
         points += value;
-        pointsTextView.setText("Points: " + Integer.toString(points));
+        pointsTextView.setText(Integer.toString(points));
     }
 
     public int GetPoints() {

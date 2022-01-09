@@ -41,6 +41,7 @@ public class Player extends Actor {
     public int invincibilityTime = 1000;
     Date endOfInvincibilityTime;
     public int bulletPerShot = 1;
+    public float dispersionAngle = 1;
 
     MatterState lastState;
 
@@ -200,13 +201,29 @@ public class Player extends Actor {
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
         if (timeSinceLastFire > TIME_BETWEEN_BULLETS) {//gameEngine.inputController.isFiring &&
+
+            float smallAngle = dispersionAngle / bulletPerShot;
+            float halfAngle = dispersionAngle / 2;
+
+            Vector2 direction = up;
+            Vector2 newDirection = new Vector2();
+            newDirection.x = (float) (direction.x * Math.cos(-halfAngle) - direction.y * Math.sin(-halfAngle));
+            newDirection.y = (float) (direction.x * Math.sin(-halfAngle) + direction.y * Math.cos(-halfAngle));
+            direction = newDirection;
+
             for (int i = 0; i < bulletPerShot; i++) {
                 Bullet bullet = getBullet();
                 if (bullet == null) {
                     return;
                 }
-                //TODO: make diferent shots
-                bullet.init(this, positionX + width / 2 - (width/2 * up.x), positionY + height / 2 - (height/2 * up.y), new Vector2(up.x, up.y));
+
+                float angle = 0;
+
+                newDirection.x = (float) (direction.x * Math.cos(smallAngle) - direction.y * Math.sin(smallAngle));
+                newDirection.y = (float) (direction.x * Math.sin(smallAngle) + direction.y * Math.cos(smallAngle));
+                direction = new Vector2(newDirection.x, newDirection.y);
+
+                bullet.init(this, positionX + width / 2 - (width/2 * up.x), positionY + height / 2 - (height/2 * up.y), new Vector2(direction.x, direction.y));
                 gameEngine.addGameObject(bullet);
             }
             timeSinceLastFire = 0;

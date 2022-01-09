@@ -10,6 +10,10 @@
     </style>-->
 
     <style name="MyAlertDialogTheme" parent="@android:style/Theme.Material.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/pink</item>
+
         <item name="android:textAppearanceSmall">@style/MyTextAppearanceSmall</item>
         <item name="android:textAppearanceMedium">@style/MyTextAppearanceMedium</item>
         <item name="android:textAppearanceLarge">@style/MyTextAppearanceBig</item>

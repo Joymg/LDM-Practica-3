@@ -77,7 +77,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 GameView gameView = (GameView) getView().findViewById(R.id.gameView);
 
                 TextView points = (TextView) view.findViewById(R.id.points);
-                points.setText("Points: 0");
+                points.setText("0");
 
                 gameEngine = new GameEngine(getActivity(), gameView);
                 gameEngine.setSoundManager(((MainActivity) getActivity()).getSoundManager());
@@ -164,10 +164,6 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                     }
                 })
                 .create().show();
-
-
-
-
     }
 
     private void playOrPause() {
