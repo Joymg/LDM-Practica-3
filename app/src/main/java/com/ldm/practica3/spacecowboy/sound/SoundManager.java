@@ -90,17 +90,24 @@ public final class SoundManager {
         }
     }
 
-    private void unloadSounds() {
+    public void unloadSounds() {
         soundPool.release();
         soundPool = null;
         soundsMap.clear();
     }
 
-    private void unloadMusic() {
+    public void unloadMusic() {
         bgPlayer.stop();
         bgPlayer.release();
     }
 
+    public void resumeMusic(){
+        bgPlayer.start();
+    }
+
+    public void pauseMusic(){
+        bgPlayer.pause();
+    }
 
 }
 
